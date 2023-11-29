@@ -4,7 +4,7 @@ import "./App.css";
 function App() {
   return (
     <>
-      <h1>E Commerce App</h1>
+      <h1>welcome to E Commerce App</h1>
     </>
   );
 }
