@@ -24,3 +24,5 @@ connection.connect((err) => {
     console.log(`db Connection failed err :  ${err}`);
   }
 });
+
+module.exports = connection;
