@@ -5,6 +5,9 @@ const dotenv = require("dotenv");
 const cors = require("cors");
 const bodyParser = require("body-parser");
 const userController = require("./v1/src/controllers/users.controller");
+const productController = require("./v1/src/controllers/products.controller");
+const ordersController = require("./v1/src/controllers/orders.controller");
+const cartItemsController = require("./v1/src/controllers/cart.controller");
 
 if (process.env.NODE_ENV == "dev") {
   dotenv.config({ path: ".env.dev" });
@@ -21,12 +24,15 @@ app.use(
   })
 );
 app.use(cors());
-app.use((req,res , next) => {
-  res.set("Cache-Control" , "no-store");
+app.use((req, res, next) => {
+  res.set("Cache-Control", "no-store");
   next();
-})
+});
 
 app.use("/v1/users", userController);
+app.use("/v1/products", productController);
+app.use("/v1/orders", ordersController);
+app.use("/v1/cartItems", cartItemsController);
 
 __dirname = path.resolve();
 
@@ -40,5 +46,13 @@ if (process.env.NODE_ENV == "production") {
     res.send("Server is running .. 🚀");
   });
 }
+
+//error handling
+app.use((err, req, res, next) => {
+  log.error(err.message);
+  res.status(err.status || 500).json({
+    message: err.message,
+  });
+});
 
 module.exports = app;
