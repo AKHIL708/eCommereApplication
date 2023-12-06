@@ -1,0 +1,115 @@
+#Navbar {
+  padding: 2vw 4vw;
+  box-shadow: 0px 6px 56px 0px rgba(0, 0, 0, 0.4);
+  overflow-x: hidden;
+  nav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    header {
+      h1 {
+        color: black;
+        font-family: "montseratBold";
+        font-size: 2.8vw;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      h1:hover {
+        transform: scale(1.1);
+      }
+    }
+    .input-sec {
+      display: flex;
+      align-items: center;
+      border: 1px solid gray;
+      justify-content: center;
+      border-radius: 5vw;
+      width: 28vw;
+
+      input {
+        // background-color: red;
+        border: unset;
+        outline: unset;
+        background-color: transparent;
+        width: 90%;
+        font-size: 1.2vw;
+        padding: 0.4vw;
+      }
+      input:focus {
+        outline: unset !important;
+      }
+      .icon {
+        font-size: 1.8vw;
+        transition: all 0.2s ease;
+        cursor: pointer;
+      }
+      .icon:hover {
+        transform: scale(1.1);
+      }
+    }
+    .account-section {
+      display: flex;
+      align-items: center;
+      // border: 1px solid red;
+      justify-content: space-around;
+      .row {
+        width: fit-content;
+        padding: 0 1vw;
+        margin: 0 0.5vw;
+        display: flex;
+        justify-content: space-around;
+        cursor: pointer;
+        // border: 1px solid black;
+        transition: all 0.2s ease;
+        .icon {
+          font-size: 1.8vw;
+        }
+        h1 {
+          font-family: "PoppinsRegular";
+          font-size: 1.2vw;
+          display: flex;
+          margin-top: auto;
+        }
+        .show-account-details {
+          display: none;
+          // background-color: red;
+          position: absolute;
+          .details {
+            background-color: #eeeeee;
+            width: fit-content;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+            padding: 1vw 1.5vw;
+            clip-path: polygon(
+              77% 0,
+              84% 7%,
+              100% 7%,
+              100% 100%,
+              80% 100%,
+              50% 100%,
+              21% 100%,
+              0 100%,
+              0 6%,
+              69% 6%
+            );
+            margin-top: 1.6vw;
+            .top-header {
+              padding-top: 1vw;
+            }
+            h1 {
+              margin: 0.6vw 0vw;
+              font-size: 1.2vw;
+            }
+          }
+        }
+      }
+      .row:hover {
+        .show-account-details {
+          display: flex;
+        }
+      }
+    }
+  }
+}
