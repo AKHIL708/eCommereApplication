@@ -32,7 +32,7 @@
         outline: unset;
         background-color: transparent;
         width: 90%;
-        font-size: 1.2vw;
+        font-size: 1vw;
         padding: 0.4vw;
       }
       input:focus {
@@ -101,7 +101,12 @@
             h1 {
               margin: 0.6vw 0vw;
               font-size: 1.2vw;
+              transition: all 0.2s ease-in-out;
             }
+            h1:hover{
+              transform: scale(1.1);
+            }
+
           }
         }
       }

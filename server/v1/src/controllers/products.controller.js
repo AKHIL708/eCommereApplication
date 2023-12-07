@@ -4,6 +4,7 @@ const {
   addProductReview,
   getAllProducts,
   getallProductsReviews,
+  getBestDealProducts,
   getSingleProductDetails,
   getSingleProductReview,
   getProductsByCategory,
@@ -38,6 +39,16 @@ router.get("/", async (req, res) => {
   handleErorrAndResponse(result, res);
 });
 
+router.get("/bestDeals/:isBestDeal", async (req, res) => {
+  const result = await getBestDealProducts([
+    {
+      column: "isBestDeal",
+      value: req.params.isBestDeal,
+    },
+  ]);
+  handleErorrAndResponse(result, res);
+});
+
 router.get("/:productId", async (req, res) => {
   const result = await getSingleProductDetails([
     {
@@ -62,7 +73,7 @@ router.get("/singleReview/:reviewId", async (req, res) => {
 router.get("/review/:productId", async (req, res) => {
   const result = await getallProductsReviews([
     {
-      column: "id",
+      column: "productId",
       value: req.params.productId,
     },
   ]);

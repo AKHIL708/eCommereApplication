@@ -1,0 +1,185 @@
+#product-details {
+  padding: 4vw 0;
+  .top-details {
+    padding: 1vw 4vw; // remember this ..
+    display: flex;
+    .col:nth-child(1) {
+      width: 55vw;
+      .store-img {
+        // border: 1px solid black;
+        width: 100%;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        height: 38vw;
+      }
+      .diff-images {
+        display: flex;
+        align-items: center;
+        justify-content: flex-start;
+        .box {
+          border: 1px solid gray;
+          background-position: center;
+          background-repeat: no-repeat;
+          background-size: contain;
+          width: 7vw;
+          height: 7vw;
+          cursor: pointer;
+          margin: 1vw 1vw 1vw 0;
+        }
+      }
+    }
+    .col:nth-child(2) {
+      width: 45vw;
+      padding: 0 2vw 0.8vw;
+      h1 {
+        font-size: 3vw;
+        font-family: "montseratBold";
+      }
+      p {
+        font-family: "senRegular";
+        padding-bottom: 1vw;
+      }
+
+      .price {
+        font-family: "poppinsMedium";
+        font-size: 2vw;
+        span {
+          color: rgb(18, 212, 18);
+          font-family: "senRegular";
+          font-size: 1vw;
+        }
+      }
+      .cutoff {
+        text-decoration: line-through;
+        span {
+          color: rgb(255, 107, 2);
+          text-decoration: unset !important;
+          padding: 0 0.5vw;
+        }
+      }
+      .size-selection {
+        display: flex;
+        margin: 2vw 0;
+        .size {
+          border: 1px solid gray;
+          font-family: "poppinsRegular";
+          width: 5vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 2vw;
+          cursor: pointer;
+          padding: 0.5vw 1.3vw;
+          transition: all 0.2s ease;
+          background-color: white;
+          color: black;
+        }
+        .change-color {
+          background-color: black;
+          color: white;
+        }
+        .size:hover {
+          background-color: black;
+          color: white;
+        }
+      }
+      .quantity-to-buy {
+        display: flex;
+        flex-direction: column;
+        header {
+          padding: 1.2vw 0 0.5vw 0;
+          h1 {
+            font-family: "poppinsRegular";
+            font-size: 1.2vw;
+          }
+        }
+        .boxes {
+          display: flex;
+          border-radius: 5vw;
+          background-color: #eeeeee;
+          align-items: center;
+          width: fit-content;
+          .box {
+            width: 5vw;
+            // border: 1px solid black;
+            display: flex;
+            justify-content: center;
+            align-items: center !important;
+            // border: 1px solid black;
+            p {
+              font-size: 2vw;
+              padding: 0.2vw 1.5vw;
+            }
+            .icon {
+              cursor: pointer;
+              font-size: 3vw;
+            }
+          }
+        }
+      }
+      .items-left {
+        display: flex;
+        align-items: center;
+        padding: 0.5vw 0;
+        p {
+          color: rgb(255, 107, 2);
+          padding: 0 1vw;
+        }
+      }
+      .add-to-cart {
+        display: flex;
+        align-items: center;
+        margin: 2vw 0;
+        button {
+          margin-right: 1.5vw;
+        }
+      }
+    }
+  }
+  .product-reviews {
+    margin: 2vw 0;
+    padding: 0 4vw;
+
+    header {
+      h1 {
+        font-family: "poppinsMedium";
+        font-size: 3.5vw;
+        text-decoration: underline;
+        padding-bottom: 2vw;
+      }
+    }
+    .reviews {
+      .row {
+        margin-bottom: 1.6vw;
+        min-width: 40vw;
+        max-width: 60vw;
+        padding: 1.5vw 1.2vw;
+        border-radius: 2vw;
+        background-color: #eeeeee;
+        header {
+          display: flex;
+          justify-content: flex-start;
+          align-items: flex-end;
+          h1 {
+            font-family: "senRegular";
+            font-size: 2.4vw;
+            text-decoration: unset !important;
+            padding: unset;
+          }
+          p {
+            color: gray;
+            font-size: 1vw;
+            font-family: "poppinsRegular";
+            margin-left: 1vw;
+          }
+        }
+        .review-desc {
+          font-size: 1vw;
+          font-family: "poppinsRegular";
+          padding: 1vw 0;
+        }
+      }
+    }
+  }
+}

@@ -2,15 +2,26 @@ import React from "react";
 import SearchIcon from "@mui/icons-material/Search";
 import PersonIcon from "@mui/icons-material/Person";
 import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
+import { Link } from "react-router-dom";
 import "./Navbar.scss";
 
 function Navbar() {
+  const logOut = () => {
+    let confirm = window.confirm("Are Your Sure!");
+    if (confirm) {
+      window.alert("logged Out");
+    } else {
+      window.alert("Ok!");
+    }
+  };
   return (
     <>
       <section id="Navbar">
         <nav>
           <header>
-            <h1>AK007</h1>
+            <h1>
+              <Link to="/">AK007</Link>
+            </h1>
           </header>
           <div className="input-sec">
             <input type="text" placeholder="search" />
@@ -22,9 +33,13 @@ function Navbar() {
               <h1>Account</h1>
               <div className="show-account-details">
                 <div className="details">
-                  <h1 className="top-header">My Account</h1>
-                  <h1>Order History</h1>
-                  <h1>LogOut</h1>
+                  <h1 className="top-header">
+                    <Link to="/user/account">My Account</Link>
+                  </h1>
+                  <h1>
+                    <Link to="/user/orderHistory">Order History</Link>
+                  </h1>
+                  <h1 onClick={() => logOut()}>LogOut</h1>
                 </div>
               </div>
             </div>

@@ -1,5 +1,189 @@
-$primary-color: #3498db;
+$dummyBorder: 1px solid black;
+#Home {
+  margin-bottom: 10vw;
+  // overflow-x: unset !important;
+  header {
+    display: flex;
+    .col {
+      width: calc(100vw / 2);
+      // border: 1px solid black;
+    }
+    .col:nth-child(1) {
+      padding: 5vw 2vw 5vw 4vw;
+      .heading {
+        // border: 1px solid black;
+        padding: 2vw 0;
+        h1 {
+          font-size: 5vw;
+          font-family: "senMedium";
+          line-height: 6.8vw;
+        }
+      }
+      .para {
+        padding: 2vw 0;
+        p {
+          font-family: "senRegular";
+          font-size: 1.6vw;
+          line-height: 2.5vw;
+        }
+      }
 
-h1 {
-  color: $primary-color;
+      .button {
+        button {
+          width: fit-content;
+          padding: 1vw 1.8vw;
+          font-family: "montseratBold";
+          font-size: 1.2vw;
+          transition: all 0.2s ease-in-out;
+          border-radius: 5vw;
+          border: 1px solid gray;
+          cursor: pointer;
+        }
+        button:hover {
+          transform: scale(1.1);
+          background-color: black;
+          color: white;
+          border: $dummyBorder;
+        }
+      }
+    }
+    .col:nth-child(2) {
+      // background-color: red;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      .image {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        img {
+          width: 80%;
+        }
+      }
+    }
+  }
+  .shop-our-top-category {
+    padding: 5vw 0;
+    display: flex;
+    align-items: flex-start;
+    // border: $dummyBorder;
+    justify-content: space-around;
+    flex-direction: column;
+
+    header {
+      display: flex;
+      padding-left: 4.2vw;
+      margin: 2.2vw 0;
+      h1 {
+        font-size: 3vw;
+        font-family: "montseratBold";
+      }
+    }
+
+    .category-boxes {
+      display: flex;
+      align-items: center;
+      justify-content: space-evenly;
+      flex-wrap: wrap;
+      // border: $dummyBorder;
+      width: 100%;
+      .category-box {
+        cursor: pointer;
+        // border: $dummyBorder;
+        width: 20vw;
+        height: 28vw;
+        border-radius: 2vw;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: 20vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.2s ease;
+        filter: grayscale(50%);
+        h1 {
+          display: flex;
+          color: white;
+          font-size: 2.2vw;
+        }
+      }
+      .category-box:hover {
+        background-size: 24vw;
+        transition: background-size 0.3s ease;
+        background-image: unset;
+      }
+
+      .category-box:hover {
+        h1 {
+          display: none;
+        }
+      }
+    }
+  }
+
+  .todays-best-deals {
+    margin-top: 3vw;
+    header {
+      display: flex;
+      padding-left: 4.2vw;
+      margin: 3.5vw 0;
+      h1 {
+        font-size: 3vw;
+        font-family: "montseratBold";
+      }
+    }
+    .deal-boxes {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-evenly;
+      .deal-box {
+        width: 26vw;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        position: relative;
+        margin-bottom: 3vw;
+        bottom: 0;
+        // overflow: hidden;
+        box-shadow: 10px 10px 39px -8px rgba(0, 0, 0, 0.25);
+        // border: 1px solid black;
+        .store-img {
+          border-radius: 1vw 1vw 0 0;
+          background-repeat: no-repeat;
+          background-size: cover;
+          background-position: center;
+          height: 20vw;
+          width: 100%;
+        }
+        .details {
+          padding: 1vw 1vw 1.2vw 1vw;
+          .name-and-price {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1vw 0;
+            h1,
+            p {
+              font-family: "poppinsRegular";
+              font-size: 1.8vw;
+            }
+          }
+          .desc {
+            font-size: 1.2vw;
+            font-family: "senRegular";
+            padding: 0.4vw 0vw;
+          }
+          button {
+            margin: 1.2vw 0;
+          }
+        }
+      }
+      .deal-box:hover {
+        position: relative;
+        bottom: 2vw;
+      }
+    }
+  }
 }

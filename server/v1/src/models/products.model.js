@@ -1,4 +1,4 @@
-const { insert, getAll, getOne, DeleteRow } = require("../utils/dbFunctions");
+const { insert, getAll, getDataBasedOnCondition, DeleteRow } = require("../utils/dbFunctions");
 const tableName = "products";
 
 const addProduct = async (data) => {
@@ -16,14 +16,19 @@ const getAllProducts = async () => {
   return result;
 };
 
+const getBestDealProducts = async (data) => {
+  const result = await getDataBasedOnCondition(tableName, data);
+  return result;
+};
+
 const getallProductsReviews = async (data) => {
-  const result = await getAll("reviews", data);
+  const result = await getDataBasedOnCondition("reviews", data);
   return result;
 };
 
 const getSingleProductDetails = async (data) => {
   try {
-    const result = await getOne(tableName, data);
+    const result = await getDataBasedOnCondition(tableName, data);
     return result;
   } catch (error) {
     // Handle the error
@@ -42,7 +47,7 @@ const getSingleProductDetails = async (data) => {
 
 const getSingleProductReview = async (data) => {
   try {
-    const result = await getOne(tableName, data);
+    const result = await getDataBasedOnCondition(tableName, data);
     return result;
   } catch (error) {
     // Handle the error
@@ -61,7 +66,7 @@ const getSingleProductReview = async (data) => {
 
 const getProductsByCategory = async (data) => {
   try {
-    const result = getOne(tableName, data);
+    const result = getDataBasedOnCondition(tableName, data);
     return result;
   } catch (error) {
     // Handle the error
@@ -105,5 +110,6 @@ module.exports = {
   deleteProduct,
   getallProductsReviews,
   addProductReview,
+  getBestDealProducts,
   getSingleProductReview,
 };

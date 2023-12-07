@@ -16,7 +16,7 @@ const getAll = async (tableName) => {
   }
 };
 
-const getOne = async (tableName, conditions) => {
+const getDataBasedOnCondition = async (tableName, conditions) => {
   try {
     // Construct the WHERE clause based on the conditions
     const whereClause = conditions
@@ -164,6 +164,6 @@ module.exports = {
   insertMany,
   getAll,
   update,
-  getOne,
+  getDataBasedOnCondition,
   DeleteRow,
 };

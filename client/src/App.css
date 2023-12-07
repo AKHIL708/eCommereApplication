@@ -40,9 +40,27 @@ input {
   font-family: "poppinsRegular";
 }
 h1 {
-  color: black !important;
+  color: black;
+  font-family: "PoppinsRegular";
 }
 
 a {
   text-decoration: none;
+  color: black !important;
+}
+button {
+  width: fit-content;
+  padding: 1vw 1.8vw;
+  font-family: "montseratBold";
+  font-size: 1.2vw;
+  transition: all 0.2s ease-in-out;
+  border-radius: 5vw;
+  border: 1px solid gray;
+  cursor: pointer;
+}
+button:hover {
+  transform: scale(1.1);
+  background-color: black;
+  color: white;
+  border: 1px solid black;
 }
