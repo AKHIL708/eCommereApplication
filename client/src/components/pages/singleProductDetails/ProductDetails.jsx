@@ -1,30 +1,92 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import shoeImage from "../../../assets/images/shoeImage.png";
+import categoryTech from "../../../assets/images/category-tech.jpg";
+import categoryBook from "../../../assets/images/category-books.jpg";
 import ScrollToTop from "../../reusableCompanents/Navbar/scrollToTop/ScrollToTop";
 
 import("./ProductDetails.scss");
 
 function ProductDetails() {
   const { productId } = useParams();
-  const [id, setId] = useState("new id");
-  const [selectQuantity, setSelecteQuantity] = useState(1);
   const [selectColor, setSelectColor] = useState(null);
+  const [addToCart, setAddToCart] = useState({
+    id: Date.now(),
+    userId: "userIdhere",
+    productId,
+    quantity: 1,
+    size: null,
+  });
+  const [reviewData, setReviewData] = useState({
+    Name: "",
+    data: "",
+  });
+  const [productDetails, setProductDetails] = useState({
+    id: "UpdateProductId",
+    pName: "Product Name",
+    category: "clothes",
+    Availability: 5,
+    originalPrice: 15000,
+    mSizeAvl: 1,
+    lSizeAvl: 2,
+    sSizeAvl: 1,
+    xlSizeAvl: 1,
+    description:
+      "best product you can use in winter season which cannot be imaged ",
+    images: [shoeImage, categoryBook, categoryTech],
+    discountPrice: 14000,
+    isBestDeal: "yes",
+  });
+
+  const [totalProductsAvl, setTotalProductsAvl] = useState(
+    productDetails.xlSizeAvl +
+      productDetails.mSizeAvl +
+      productDetails.sSizeAvl +
+      productDetails.lSizeAvl
+  );
+  const [highLightImage, setHighLightImage] = useState(
+    productDetails.images[0]
+  );
+
   const handleSizeClick = (size) => {
     setSelectColor(size);
+    setAddToCart({ ...addToCart, size: size });
+  };
+
+  const handleAddQuantity = () => {
+    if (totalProductsAvl - 1 != 0) {
+      setAddToCart({ ...addToCart, quantity: addToCart.quantity + 1 });
+      setTotalProductsAvl(totalProductsAvl - 1);
+    } else {
+      window.alert("products end limits reached!");
+    }
+  };
+  const handleQuantityLess = () => {
+    if (addToCart.quantity <= 1) {
+      setAddToCart({ ...addToCart, quantity: 1 });
+    } else {
+      setAddToCart({ ...addToCart, quantity: addToCart.quantity - 1 });
+      setTotalProductsAvl(totalProductsAvl + 1);
+    }
+  };
+
+  const AddReview = () => {
+    console.log(reviewData);
+    setReviewData({ Name: "", data: "" });
+  };
+
+  const AddToCart = () => {
+    if (addToCart.size == null) {
+      window.alert("Please select the size!");
+    } else {
+      // add to cart items using api call
+      window.alert("Add the CartItems Add API HERE");
+    }
   };
 
   useEffect(() => {
-    setId(productId);
+    setAddToCart({ ...addToCart, productId: productId });
   }, []);
-
-  const handleQuantityLess = () => {
-    if (selectQuantity <= 1) {
-      setSelecteQuantity(1);
-    } else {
-      setSelecteQuantity(selectQuantity - 1);
-    }
-  };
 
   return (
     <>
@@ -34,33 +96,32 @@ function ProductDetails() {
           <div className="col">
             <div
               className="store-img"
-              style={{ backgroundImage: `url(${shoeImage})` }}
+              style={{ backgroundImage: `url(${highLightImage})` }}
             ></div>
             <div className="diff-images">
-              <div
-                className="box"
-                style={{ backgroundImage: `url(${shoeImage})` }}
-              ></div>
-              <div
-                className="box"
-                style={{ backgroundImage: `url(${shoeImage})` }}
-              ></div>
-              <div
-                className="box"
-                style={{ backgroundImage: `url(${shoeImage})` }}
-              ></div>
+              {productDetails.images.map((data, index) => {
+                return (
+                  <>
+                    {" "}
+                    <div
+                      className="box"
+                      style={{ backgroundImage: `url(${data})` }}
+                      onClick={() => setHighLightImage(data)}
+                    ></div>
+                  </>
+                );
+              })}
             </div>
           </div>
           <div className="col">
-            <h1>Name of Product</h1>
-            <p className="Desp">
-              best thing to wear for yourself in this world right now ..
-            </p>
+            <h1>{productDetails.pName}</h1>
+            <p className="Desp">{productDetails.description}</p>
             <h2 className="price">
-              ₹ 1500 <span>inclusive all taxes</span>
+              ₹ {productDetails.originalPrice}
+              <span>inclusive all taxes</span>
             </h2>
             <h2 className="cutoff price">
-              ₹ 2500 <span>60% off</span>
+              ₹ {productDetails.discountPrice} <span>60% off</span>
             </h2>
             <div className="size-selection">
               <div
@@ -99,23 +160,20 @@ function ProductDetails() {
                   </p>
                 </div>
                 <div className="box">
-                  <p>{selectQuantity}</p>
+                  <p>{addToCart.quantity}</p>
                 </div>
                 <div className="box">
-                  <p
-                    className="icon"
-                    onClick={() => setSelecteQuantity(selectQuantity + 1)}
-                  >
+                  <p className="icon" onClick={() => handleAddQuantity()}>
                     +
                   </p>
                 </div>
               </div>
               <div className="items-left">
-                <p>15 left hurry up .</p>
+                <p>{totalProductsAvl - 1} left hurry up .</p>
               </div>
             </div>
             <div className="add-to-cart">
-              <button>Add to Cart</button>
+              <button onClick={() => AddToCart()}>Add to Cart</button>
               <button>Buy Now</button>
             </div>
           </div>
@@ -152,7 +210,36 @@ function ProductDetails() {
           </div>
         </div>
         <div className="add-review">
-          <h1 style={{ fontSize: "5vw" }}>ADD SECTION NEED TO BE ADDED </h1>
+          <h1>Write Review</h1>
+          <section className="col">
+            <div className="row">
+              <p>Your Name</p>
+              <input
+                type="text"
+                placeholder="Your Name"
+                value={reviewData.Name}
+                onChange={(e) =>
+                  setReviewData({ ...reviewData, Name: e.target.value })
+                }
+              />
+            </div>
+            <div className="row">
+              <p>Your Review</p>{" "}
+              <textarea
+                value={reviewData.data}
+                onChange={(e) =>
+                  setReviewData({ ...reviewData, data: e.target.value })
+                }
+                type="text"
+                placeholder="review"
+                rows={5}
+                cols={10}
+              />
+            </div>
+            <div className="row">
+              <button onClick={() => AddReview("data")}>Submit</button>
+            </div>
+          </section>
         </div>
       </section>
     </>

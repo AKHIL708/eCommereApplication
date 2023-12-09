@@ -1,0 +1,137 @@
+$product-row-width: 25vw;
+$price-width: 10vw;
+$quantity-width: 10vw;
+
+.add-gray {
+  background-color: #eeeeee !important;
+}
+#cart-items {
+  display: flex;
+  padding: 2vw 0;
+  .col:nth-child(1) {
+    // border: 1px solid red;
+    width: 60vw;
+    padding: 0.5vw 0vw;
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      h1 {
+        font-size: 2.5vw;
+      }
+    }
+    .row-header {
+      padding: 0.2vw 1.4vw;
+      display: flex;
+      background-color: #d4d4d4;
+      align-items: center;
+      h1 {
+        width: 70%;
+      }
+      p {
+        width: 15%;
+        font-family: "poppinsRegular";
+      }
+    }
+    .row {
+      border-right: 1px solid #eeeeee;
+      padding: 0 1.4vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .store-image {
+        width: 10vw;
+        height: 10vw;
+        background-repeat: no-repeat;
+        background-size: contain;
+        background-position: center;
+      }
+      .product-desp {
+        // border: 1px solid black;
+        width: 50%;
+        display: flex;
+        align-items: flex-start;
+        padding: 0 0 0 3.5vw;
+        flex-direction: column;
+        p {
+          font-family: "senRegular";
+          font-size: 1.2vw;
+          padding: 0.4vw 0vw;
+        }
+        .delete-product {
+          padding: 0.4vw 0;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+        .delete-product:hover {
+          transform: scale(1.1);
+        }
+      }
+
+      .price {
+        width: 8%;
+        display: flex;
+        align-items: center;
+        justify-content: space-evenly;
+        padding-left: 0.6vw;
+        p {
+          font-family: "senRegular";
+          font-size: 1.2vw;
+          //   padding: 0.4vw 0vw;
+        }
+      }
+      .quantity {
+        width: 15%;
+        display: flex;
+        margin-left: auto;
+        padding-left: 2vw;
+        // border: 1px solid red;
+      }
+    }
+  }
+  .col:nth-child(2) {
+    width: 40vw;
+    padding: 1vw;
+    margin-top: 3.5vw;
+    .row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.2vw 1vw;
+      h1{
+        font-size: 1.2vw;
+        color: black;
+        margin-top: -1vw;
+      }
+
+      p {
+        font-family: "senRegular";
+        font-size: 1.3vw;
+      }
+      p:nth-child(2) {
+        color: rgb(1, 77, 255);
+      }
+    }
+    .total {
+     border-top: 1px solid gray;
+     border-bottom: 1px solid gray;
+    }
+    input{
+        width: 62%;
+        padding: 0.6vw 1vw;
+    }
+    input:focus{
+        outline: none;
+    }
+    .check-out{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin:0 auto;
+        width: 96% !important;
+    }
+  }
+}

@@ -43,9 +43,19 @@ function Navbar() {
                 </div>
               </div>
             </div>
-            <div className="row">
-              <AddShoppingCartIcon className="icon" />
-              <h1>Cart</h1>
+            <div
+              className="row"
+              title="add the lenght of cart items in localStorage and show that "
+            >
+              {" "}
+              <Link to="/cart">
+                {" "}
+                <AddShoppingCartIcon className="icon" />
+              </Link>
+              <h1>
+                {" "}
+                <Link to="/cart">Cart </Link>
+              </h1>
             </div>
           </div>
         </nav>

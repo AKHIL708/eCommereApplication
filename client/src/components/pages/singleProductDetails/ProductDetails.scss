@@ -182,4 +182,45 @@
       }
     }
   }
+  .add-review {
+    padding: 1vw 5vw;
+    h1 {
+      font-size: 2.5vw;
+    }
+    .col {
+      .row {
+        // border: 1px solid black;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        width: 60vw;
+        margin: 1vw 0;
+        p {
+          font-family: "senRegular";
+          padding-bottom: 0.5vw;
+        }
+        input {
+          width: 100%;
+          border: 1px solid gray;
+          border-radius: 0.5vw;
+          padding: 0.6vw 0.8vw;
+          font-size: 1.2vw;
+        }
+        textarea {
+          width: 100%;
+          border: 1px solid gray;
+          border-radius: 0.5vw;
+          padding: 0.6vw 0.8vw;
+          font-size: 1.2vw;
+          resize: none;
+        }
+        input:focus {
+          outline: none;
+        }
+        textarea:focus {
+          outline: none;
+        }
+      }
+    }
+  }
 }

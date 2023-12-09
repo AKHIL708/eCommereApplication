@@ -1,0 +1,62 @@
+#category-product {
+  margin: 4vw 0;
+  header {
+    padding: 0 0 2.6vw 5.4vw;
+    h1 {
+      color: gray;
+      font-size: 2.2vw;
+      //   text-shadow: 2px 1px 3px rgba(0,0,0,0.38);
+    }
+  }
+  .deal-boxes {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-evenly;
+    .deal-box {
+      width: 26vw;
+      transition: all 0.2s ease;
+      cursor: pointer;
+      position: relative;
+      margin-bottom: 3vw;
+      bottom: 0;
+      // overflow: hidden;
+      box-shadow: 10px 10px 39px -8px rgba(0, 0, 0, 0.25);
+      // border: 1px solid black;
+      .store-img {
+        border-radius: 1vw 1vw 0 0;
+        background-repeat: no-repeat;
+        background-size: cover;
+        background-position: center;
+        height: 20vw;
+        width: 100%;
+      }
+      .details {
+        padding: 1vw 1vw 1.2vw 1vw;
+        .name-and-price {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 1vw 0;
+          h1,
+          p {
+            font-family: "poppinsRegular";
+            font-size: 1.8vw;
+          }
+        }
+        .desc {
+          font-size: 1.2vw;
+          font-family: "senRegular";
+          padding: 0.4vw 0vw;
+        }
+        button {
+          margin: 1.2vw 0;
+        }
+      }
+    }
+    .deal-box:hover {
+      position: relative;
+      bottom: 2vw;
+    }
+  }
+}

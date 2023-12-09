@@ -1,0 +1,136 @@
+.active-link {
+  color: green !important;
+  font-weight: bolder;
+}
+
+#user-account {
+  margin-top: 4vw;
+  padding: 1vw 3vw;
+  display: flex;
+  .col:nth-child(1) {
+    // border: 1px solid black;
+    width: 15vw;
+    border-right: 1px solid gray;
+    .row {
+      padding-bottom: 1.4vw;
+      // border: 1px solid red;
+      header {
+        margin-bottom: 0.5vw;
+        h1 {
+          color: gray;
+          padding-bottom: 0.4vw;
+          font-size: 1.8vw;
+        }
+      }
+      p {
+        font-family: "senRegular";
+        padding: 0.6vw 0;
+        font-size: 1.2vw;
+        cursor: pointer;
+        transition: all 0.2s ease;
+      }
+      p:hover {
+        transform: scale(1.03);
+      }
+      button {
+        font-size: 1.2vw;
+        padding: 0.4vw 1vw;
+        width: 10vw;
+        margin: 1vw 0;
+      }
+    }
+  }
+
+  .col:nth-child(2) {
+    // border: 1px solid red;
+    background-color: #eeeeee;
+    width: 80vw;
+    #profile {
+      padding: 1vw 2vw;
+      header {
+        padding-bottom: 1.2vw;
+        h1 {
+          font-size: 3.4vw;
+          font-family: "senMedium";
+        }
+      }
+      .row {
+        padding: 1vw 0;
+        h1 {
+          padding: 0 0 0.4vw 0;
+          text-shadow: 1px 1px 2px black 0.9;
+          color: gray;
+          font-family: "poppinsRegular";
+          font-size: 1.3vw;
+        }
+        input {
+          padding: 0.5vw 0.8vw;
+          width: 25vw;
+          outline: none;
+          border: 1px solid rgb(208, 208, 208);
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+    }
+    #change-password {
+      padding: 1vw 2vw;
+      header {
+        padding-bottom: 1.2vw;
+        h1 {
+          font-size: 3.4vw;
+          font-family: "senMedium";
+        }
+      }
+      .curr-password {
+        display: flex;
+        flex-direction: column;
+        button {
+          margin: 0.8vw 0;
+          padding: 0.6vw 1.5vw;
+          font-size: 1vw;
+        }
+      }
+      .row {
+        padding: 1vw 0;
+        p {
+          padding: 0 0 0.4vw 0;
+          text-shadow: 1px 1px 2px black 0.9;
+          color: gray;
+          font-family: "poppinsRegular";
+          font-size: 1.3vw;
+        }
+        input {
+          padding: 0.5vw 0.8vw;
+          width: 25vw;
+          outline: none;
+          border: 1px solid rgb(208, 208, 208);
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+    }
+    #address {
+      padding: 1vw 2vw;
+      header {
+        padding-bottom: 1.2vw;
+        h1 {
+          font-size: 3.4vw;
+          font-family: "senMedium";
+        }
+      }
+      .row {
+        background-color: white;
+        padding: 2vw;
+        border-radius: 2vw;
+        box-shadow: 10px 10px 26px -1px rgba(0, 0, 0, 0.32);
+
+        p {
+          font-family: "poppinsRegular";
+        }
+      }
+    }
+  }
+}

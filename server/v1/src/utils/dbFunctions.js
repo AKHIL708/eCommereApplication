@@ -76,7 +76,6 @@ const insert = async (tableName, dataObj) => {
   }
 };
 
-
 const insertMany = async (tableName, dataArray) => {
   if (!Array.isArray(dataArray) || dataArray.length === 0) {
     return {
@@ -93,7 +92,9 @@ const insertMany = async (tableName, dataArray) => {
       const values = Object.values(dataObj);
 
       const placeholders = keys.map(() => "?").join(", ");
-      const sql = `INSERT INTO ${tableName} (${keys.join(", ")}) VALUES (${placeholders})`;
+      const sql = `INSERT INTO ${tableName} (${keys.join(
+        ", "
+      )}) VALUES (${placeholders})`;
 
       const result = await db
         .promise()
@@ -119,7 +120,6 @@ const insertMany = async (tableName, dataArray) => {
     return errorResult;
   }
 };
-
 
 const update = async (tableName, newData, id) => {
   try {

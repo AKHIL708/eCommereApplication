@@ -75,6 +75,7 @@
           // background-color: red;
           position: absolute;
           .details {
+            z-index: 999;
             background-color: #eeeeee;
             width: fit-content;
             display: flex;
