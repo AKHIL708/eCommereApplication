@@ -97,7 +97,7 @@ function Home() {
         <header>
           <div className="col">
             <div className="heading">
-              <h1>AK007 Simple Shopping Solution</h1>
+              <h1>Mounika55 Simple Shopping Solution</h1>
             </div>
             <div className="para">
               <p>
