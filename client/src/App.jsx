@@ -12,6 +12,7 @@ import { Routes, Route } from "react-router-dom";
 import ScrollToTop from "./components/reusableCompanents/Navbar/scrollToTop/ScrollToTop";
 import CartItems from "./components/pages/cartItems/CartItems";
 import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
+import Login from "./components/reusableCompanents/login/Login.jsx";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
       <CartItemsContextProvider>
         <Routes>
           <Route exact path="/" element={<Home />} />
+          <Route exact path="/login" element={<Login />} />
           <Route exact path="/user/orderHistory" element={<OrderHistory />} />
           <Route exact path="/user/account" element={<UserAccount />} />
           <Route
