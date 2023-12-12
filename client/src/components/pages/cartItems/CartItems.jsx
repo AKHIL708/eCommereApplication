@@ -3,8 +3,10 @@ import shoeImage from "../../../assets/images/shoeImage.png";
 import CartItemsContext from "../../../context/cartItemsHandlingContextApi/CartItemsContext";
 import DeleteIcon from "@mui/icons-material/Delete";
 import "./CartItems.scss";
+import { useNavigate } from "react-router-dom";
 
 function CartItems() {
+  const navigate = useNavigate();
   const [cartItems, setCartItems] = useState([
     {
       id: "cartid",
@@ -118,7 +120,12 @@ function CartItems() {
             <button>Apply coupon</button>
           </div>
           <div className="row">
-            <button className="check-out">CHECKOUT</button>
+            <button
+              onClick={() => navigate("/check-out")}
+              className="check-out"
+            >
+              CHECKOUT
+            </button>
           </div>
           <div className="row">
             <h1>

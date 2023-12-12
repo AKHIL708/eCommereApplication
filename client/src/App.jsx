@@ -11,6 +11,7 @@ import { Routes, Route } from "react-router-dom";
 // import ScrollToTop from "react-scroll-to-top";
 import ScrollToTop from "./components/reusableCompanents/Navbar/scrollToTop/ScrollToTop";
 import CartItems from "./components/pages/cartItems/CartItems";
+import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
 
 function App() {
   return (
@@ -33,6 +34,7 @@ function App() {
             element={<CategoryProducts />}
           />
           <Route exact path="/cart" element={<CartItems />} />
+          <Route exact path="/check-out" element={<CheckOut />} />
           {/* if no route matched  */}
           <Route exact path="*" element={<NotFound />} />
         </Routes>
