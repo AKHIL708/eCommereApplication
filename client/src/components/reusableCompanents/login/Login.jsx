@@ -1,10 +1,14 @@
-import React, { useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import ArrowRightAltIcon from "@mui/icons-material/ArrowRightAlt";
+import userAuthContext from "../../../context/userAuthContextApi/userAuthContext.js";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
 import("./Login.scss");
 
 function Login() {
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
+  const { userToken, setUserToken } = useContext(userAuthContext);
   const [userCredentails, setUserCredentails] = useState({
     userName: "",
     password: "",
@@ -17,9 +21,16 @@ function Login() {
       window.alert("Enter User-Name and password");
     } else {
       window.alert("logged in success");
+      Cookies.set("userToken", "asdfgoasdfaksdfashdflasdf");
+      let storedCookieToken = Cookies.get("userToken");
+      setUserToken(storedCookieToken);
       navigate("/");
     }
   };
+  if (userToken != null) {
+    return navigate("/");
+  }
+ 
   return (
     <>
       <section id="login">

@@ -1,27 +1,122 @@
 import React, { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import _ from "lodash";
 import "./UserAccount.scss";
 
 function UserAccount() {
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState("profile");
   const [section, setSection] = useState("profile");
+
+  const [orderHistoryData, setOrderHistoryData] = useState([
+    {
+      id: "00",
+      groupedOrderId: "1",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "1",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "2",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "2",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "2",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "3",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+    {
+      id: "00",
+      groupedOrderId: "3",
+      productId: "1234",
+      userId: "1235399889",
+      placedTimeAt: "today",
+      modeOfPayment: "upi",
+      orderStatus: "success",
+      quantity: 5,
+      size: null,
+    },
+  ]);
+  console.log(Object.keys(orderHistoryData[0]));
+  const orderGroups = _.groupBy(orderHistoryData, "groupedOrderId");
+  // console.log(orderGroups);
+
   const [addressData, setAddressData] = useState({
-    firstName: "",
-    lastName: "",
-    city: "",
-    phoneNo: "",
-    address: "",
-    state: "",
-    pinCode: "",
+    firstName: "Akhil",
+    lastName: "Nayak",
+    city: "Hyderbad",
+    phoneNo: "9618134708",
+    address: "5-9-953 gunfoundry himayathnagar hyderabd",
+    state: "Telangana",
+    pinCode: "500029",
   });
   const { firstName, lastName, city, phoneNo, address, state, pinCode } =
     addressData;
 
+  const currentPathname = window.location.pathname.substring(0, 13);
   const handleClick = (data) => {
     setActiveLink(data);
     setSection(data);
+
+    const newPathname = `${currentPathname}/${data}`;
+    // console.log(newPathname.substring(0, 14));
+
+    // Use navigate to update the URL
+    navigate(newPathname);
   };
+
   const handleAddressChange = (key, data) => {
     setAddressData({ ...addressData, [key]: data });
   };
@@ -321,7 +416,28 @@ function UserAccount() {
           )}
 
           {section == "wish-list" ? <> </> : <></>}
-          {section == "order-history" ? <>order-history </> : <></>}
+          {section == "order-history" ? (
+            <>
+              {Object.keys(orderGroups).map((groupId) => (
+                <div key={groupId}>
+                  <h3>Grouped Order ID: {groupId}</h3>
+                  <div>
+                    {orderGroups[groupId].map((order) => (
+                      <div key={order.id} className="order-box">
+                        {/* Render order details here */}
+                        <p>no of products : {orderGroups[groupId].length}</p>
+                        <p>Order ID: {order.id}</p>
+                        <p>Product ID: {order.productId}</p>
+                        {/* Add other order details as needed */}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </>
+          ) : (
+            <></>
+          )}
           {section == "returns" ? <>returns </> : <></>}
           {section == "cash-backs" ? <>cash-backs </> : <></>}
           {section == "ticket" ? <>ticket </> : <></>}

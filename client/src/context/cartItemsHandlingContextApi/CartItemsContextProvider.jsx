@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import { useEffect, useState } from "react";
 import CartItemsContext from "./CartItemsContext";
 
 const CartItemsContextProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState([]);
+  const [totalCartItems, setTotalCartItems] = useState(null);
   return (
     <>
-      <CartItemsContext.Provider value={{ cartItems, setCartItems }}>
+      <CartItemsContext.Provider value={{ totalCartItems, setTotalCartItems }}>
         {children}
       </CartItemsContext.Provider>
     </>

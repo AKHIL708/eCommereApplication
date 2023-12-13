@@ -66,9 +66,26 @@
         }
         h1 {
           font-family: "PoppinsRegular";
-          font-size: 1.2vw;
+          font-size: 1.5vw;
           display: flex;
           margin-top: auto;
+        }
+        .cart-counter {
+          background-color: white;
+          position: absolute;
+          width: 2.2vw;
+          height: 2.2vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: 50%;
+          top: 1vw;
+          margin: 0.5vw 0vw 0vw -5vw;
+          border: 1px solid #eeeeee;
+          p {
+            font-family: "poppinsMedium";
+            font-size: 1.22vw;
+          }
         }
         .show-account-details {
           display: none;
@@ -104,10 +121,9 @@
               font-size: 1.2vw;
               transition: all 0.2s ease-in-out;
             }
-            h1:hover{
+            h1:hover {
               transform: scale(1.1);
             }
-
           }
         }
       }

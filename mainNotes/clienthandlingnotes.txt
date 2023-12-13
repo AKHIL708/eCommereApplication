@@ -1,0 +1,9 @@
+Q.handling of placing the order and then showing in order history page .
+ans. when a user places the order we will add the userid , id , groupedId 
+     here id = "an unique id".
+          userId = "to know which user has placed",
+          "groupedId" = "this is mainly to to divide the orders in order history section
+           like example on day 1 he has placed 2 orders and on day 2 placed 5 orders just
+           to get all the orders which where placed at once for that "
+           and we will get all the data of the orders placed by the user and then we wil
+           separate them in the client section in order hitory

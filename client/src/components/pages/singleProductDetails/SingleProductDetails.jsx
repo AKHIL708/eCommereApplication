@@ -1,26 +1,38 @@
 import React, { useContext, useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import shoeImage from "../../../assets/images/shoeImage.png";
 import categoryTech from "../../../assets/images/category-tech.jpg";
 import categoryBook from "../../../assets/images/category-books.jpg";
 import ScrollToTop from "../../reusableCompanents/Navbar/scrollToTop/ScrollToTop";
+import CartItemsContext from "../../../context/cartItemsHandlingContextApi/CartItemsContext.js";
+import("./SingleProductDetails.scss");
 
-import("./ProductDetails.scss");
-
-function ProductDetails() {
+function SingleProductDetails() {
   const { productId } = useParams();
+  const { setTotalCartItems } = useContext(CartItemsContext);
   const [selectColor, setSelectColor] = useState(null);
-  const [addToCart, setAddToCart] = useState({
-    id: Date.now(),
-    userId: "userIdhere",
-    productId,
-    quantity: 1,
-    size: null,
-  });
+  const [productQuantityAdded, setProductQuantityAdded] = useState(1);
+  const [productSize, setProductSize] = useState(null);
+
+  const [addItemsToCart, setAddItemsToCart] = useState([]);
+
   const [reviewData, setReviewData] = useState({
-    Name: "",
+    id: "1",
+    time: "dec 1st",
+    productId,
+    name: "",
     data: "",
   });
+  const [productReviews, setProductReviews] = useState([
+    {
+      id: "1",
+      time: "dec 1st",
+      productId,
+      name: "userName",
+      data: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Suscipit nam veniam tempore dicta dolore praesentium dolores architecto eaque inventore voluptates itaque, fugit temporibus ratione facilis nesciunt mollitia quisquam quibusdam quas.",
+    },
+  ]);
   const [productDetails, setProductDetails] = useState({
     id: "UpdateProductId",
     pName: "Product Name",
@@ -50,43 +62,61 @@ function ProductDetails() {
 
   const handleSizeClick = (size) => {
     setSelectColor(size);
-    setAddToCart({ ...addToCart, size: size });
+    setProductSize(size);
   };
 
   const handleAddQuantity = () => {
     if (totalProductsAvl - 1 != 0) {
-      setAddToCart({ ...addToCart, quantity: addToCart.quantity + 1 });
+      setProductQuantityAdded(productQuantityAdded + 1);
       setTotalProductsAvl(totalProductsAvl - 1);
     } else {
       window.alert("products end limits reached!");
     }
   };
   const handleQuantityLess = () => {
-    if (addToCart.quantity <= 1) {
-      setAddToCart({ ...addToCart, quantity: 1 });
+    if (productQuantityAdded <= 1) {
+      setProductQuantityAdded(1);
     } else {
-      setAddToCart({ ...addToCart, quantity: addToCart.quantity - 1 });
+      setProductQuantityAdded(productQuantityAdded - 1);
       setTotalProductsAvl(totalProductsAvl + 1);
     }
   };
 
   const AddReview = () => {
     console.log(reviewData);
-    setReviewData({ Name: "", data: "" });
+    setProductReviews((prev) => [...prev, reviewData]);
+    setReviewData({
+      name: "",
+      data: "",
+    });
   };
 
   const AddToCart = () => {
-    if (addToCart.size == null) {
+    if (productSize == null) {
       window.alert("Please select the size!");
     } else {
       // add to cart items using api call
-      window.alert("Add the CartItems Add API HERE");
+      // window.alert("Add the CartItems Add API HERE");
+      let updatedCartItems = [
+        ...addItemsToCart,
+        {
+          id: Date.now(),
+          userId: "userIdhere",
+          productId,
+          quantity: productQuantityAdded,
+          size: productSize,
+        },
+      ];
+      setAddItemsToCart((prevCart) => {
+        // Use the updated state directly in the callback
+        Cookies.set("cartItems", JSON.stringify(updatedCartItems));
+        // console.log(cookiesCartData.length);
+        return updatedCartItems;
+      });
+      console.log(addItemsToCart.length);
+      setTotalCartItems(addItemsToCart.length + 1);
     }
   };
-
-  useEffect(() => {
-    setAddToCart({ ...addToCart, productId: productId });
-  }, []);
 
   return (
     <>
@@ -160,7 +190,7 @@ function ProductDetails() {
                   </p>
                 </div>
                 <div className="box">
-                  <p>{addToCart.quantity}</p>
+                  <p>{productQuantityAdded}</p>
                 </div>
                 <div className="box">
                   <p className="icon" onClick={() => handleAddQuantity()}>
@@ -183,30 +213,19 @@ function ProductDetails() {
             <h1>Product Reviews</h1>
           </header>
           <div className="reviews">
-            <div className="row">
-              <header>
-                <h1>Akhil Nayak</h1>
-                <p>26 dec 2023</p>
-              </header>
-              <p className="review-desc">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Suscipit nam veniam tempore dicta dolore praesentium dolores
-                architecto eaque inventore voluptates itaque, fugit temporibus
-                ratione facilis nesciunt mollitia quisquam quibusdam quas.
-              </p>
-            </div>
-            <div className="row">
-              <header>
-                <h1>Akhil Nayak</h1>
-                <p>26 dec 2023</p>
-              </header>
-              <p className="review-desc">
-                Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                Suscipit nam veniam tempore dicta dolore praesentium dolores
-                architecto eaque inventore voluptates itaque, fugit temporibus
-                ratione facilis nesciunt mollitia quisquam quibusdam quas.
-              </p>
-            </div>
+            {productReviews.map((data, index) => {
+              return (
+                <>
+                  <div className="row">
+                    <header>
+                      <h1>{data.name}</h1>
+                      <p>{data.time}</p>
+                    </header>
+                    <p className="review-desc">{data.data}</p>
+                  </div>
+                </>
+              );
+            })}
           </div>
         </div>
         <div className="add-review">
@@ -217,9 +236,9 @@ function ProductDetails() {
               <input
                 type="text"
                 placeholder="Your Name"
-                value={reviewData.Name}
+                value={reviewData.name}
                 onChange={(e) =>
-                  setReviewData({ ...reviewData, Name: e.target.value })
+                  setReviewData({ ...reviewData, name: e.target.value })
                 }
               />
             </div>
@@ -246,4 +265,4 @@ function ProductDetails() {
   );
 }
 
-export default ProductDetails;
+export default SingleProductDetails;

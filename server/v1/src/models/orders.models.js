@@ -2,7 +2,7 @@ const {
   insert,
   insertMany,
   getAll,
-  getOne,
+  getDataBasedOnCondition,
   update,
 } = require("../utils/dbFunctions");
 const tableName = "orders";
@@ -28,17 +28,17 @@ const getAllOrders = async () => {
 
 const getOrdersByUserId = async (data) => {
   try {
-    const result = await getOne(tableName, data);
+    const result = await getDataBasedOnCondition(tableName, data);
     return result;
   } catch (error) {
     // Handle the error
     const errorResult = {
-      message: "Error in getAllOrders",
+      message: "error in getOrdersByUserId",
       err: error.message,
       code: error.code,
       details: {
         tableName,
-        condition,
+        data,
       },
     };
     return errorResult;
@@ -57,7 +57,7 @@ const addOrder = async (data) => {
       code: error.code,
       details: {
         tableName,
-        condition,
+        data,
       },
     };
     return errorResult;
@@ -71,12 +71,12 @@ const addManyOrder = async (data) => {
   } catch (error) {
     // Handle the error
     const errorResult = {
-      message: "Error in addOrder",
+      message: "Error in addManyOrder",
       err: error.message,
       code: error.code,
       details: {
         tableName,
-        condition,
+        data,
       },
     };
     return errorResult;
@@ -89,12 +89,12 @@ const updateOrder = async (data, id) => {
     return result;
   } catch (error) {
     const errorResult = {
-      message: "Error in addOrder",
+      message: "Error in updateOrder",
       err: error.message,
       code: error.code,
       details: {
         tableName,
-        condition,
+        data,
       },
     };
     return errorResult;
