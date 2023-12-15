@@ -24,10 +24,14 @@ function Navbar() {
     }
   };
   useEffect(() => {
+    // console.log(Cookies.get("cartItems"));
+    // console.log("totalCarLenth : ", totalCartItems);
+    // console.log(Cookies.get("cartItems"));
+
     if (Cookies.get("cartItems") !== undefined) {
       let cookiesdata = JSON.parse(Cookies.get("cartItems"));
-      console.log(cookiesdata.length);
-      setTotalCartItems(cookiesdata.length);
+      // console.log(cookiesdata);
+      setTotalCartItems(cookiesdata);
     }
   }, []);
 
@@ -79,11 +83,11 @@ function Navbar() {
               title="add the lenght of cart items in localStorage and show that "
             >
               {" "}
-              {totalCartItems > 0 ? (
+              {totalCartItems.length > 0 ? (
                 <>
                   {" "}
                   <div className="cart-counter">
-                    <p>{totalCartItems}</p>
+                    <p>{totalCartItems.length}</p>
                   </div>
                 </>
               ) : (

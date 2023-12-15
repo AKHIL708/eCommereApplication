@@ -6,15 +6,45 @@ import categoryTech from "../../../assets/images/category-tech.jpg";
 import categoryBook from "../../../assets/images/category-books.jpg";
 import ScrollToTop from "../../reusableCompanents/Navbar/scrollToTop/ScrollToTop";
 import CartItemsContext from "../../../context/cartItemsHandlingContextApi/CartItemsContext.js";
+import Stack from "@mui/material/Stack";
+import Button from "@mui/material/Button";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import("./SingleProductDetails.scss");
 
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
 function SingleProductDetails() {
+  const [state, setState] = useState({
+    open: false,
+    message: "hello",
+    severity: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
+  const { vertical, horizontal, open, message, severity } = state;
+
+  const handleClick = ({ open, message, severity }) => {
+    console.log(message, open, severity);
+    setState({
+      ...state,
+      open,
+      message,
+      severity,
+    });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
   const { productId } = useParams();
   const { setTotalCartItems } = useContext(CartItemsContext);
   const [selectColor, setSelectColor] = useState(null);
   const [productQuantityAdded, setProductQuantityAdded] = useState(1);
   const [productSize, setProductSize] = useState(null);
-
   const [addItemsToCart, setAddItemsToCart] = useState([]);
 
   const [reviewData, setReviewData] = useState({
@@ -38,7 +68,7 @@ function SingleProductDetails() {
     pName: "Product Name",
     category: "clothes",
     Availability: 5,
-    originalPrice: 15000,
+    originalPrice: 500,
     mSizeAvl: 1,
     lSizeAvl: 2,
     sSizeAvl: 1,
@@ -46,7 +76,7 @@ function SingleProductDetails() {
     description:
       "best product you can use in winter season which cannot be imaged ",
     images: [shoeImage, categoryBook, categoryTech],
-    discountPrice: 14000,
+    discountPrice: 400,
     isBestDeal: "yes",
   });
 
@@ -105,18 +135,37 @@ function SingleProductDetails() {
           productId,
           quantity: productQuantityAdded,
           size: productSize,
+          imageUrl: "asdf",
+          pName: productDetails.pName,
+          discountedPrice: productDetails.discountPrice,
+          originalPrice: productDetails.originalPrice,
         },
       ];
       setAddItemsToCart((prevCart) => {
         // Use the updated state directly in the callback
-        Cookies.set("cartItems", JSON.stringify(updatedCartItems));
         // console.log(cookiesCartData.length);
+        Cookies.set("cartItems", JSON.stringify(updatedCartItems), {
+          expires: 7,
+        });
+        handleClick({ open: true, message: "Item Added Successfully !" });
         return updatedCartItems;
       });
-      console.log(addItemsToCart.length);
-      setTotalCartItems(addItemsToCart.length + 1);
     }
   };
+
+  useEffect(() => {
+    if (Cookies.get("cartItems") != undefined) {
+      setTotalCartItems(JSON.parse(Cookies.get("cartItems")));
+      console.log(JSON.parse(Cookies.get("cartItems")));
+    }
+  }, [addItemsToCart]); // This will run whenever addItemsToCart changes
+
+  useEffect(() => {
+    if (Cookies.get("cartItems") != undefined) {
+      setAddItemsToCart(JSON.parse(Cookies.get("cartItems")));
+      // console.log(JSON.parse(Cookies.get("cartItems")));
+    }
+  }, []);
 
   return (
     <>
@@ -134,6 +183,7 @@ function SingleProductDetails() {
                   <>
                     {" "}
                     <div
+                      key={index}
                       className="box"
                       style={{ backgroundImage: `url(${data})` }}
                       onClick={() => setHighLightImage(data)}
@@ -147,11 +197,11 @@ function SingleProductDetails() {
             <h1>{productDetails.pName}</h1>
             <p className="Desp">{productDetails.description}</p>
             <h2 className="price">
-              ₹ {productDetails.originalPrice}
+              ₹ {productDetails.discountPrice}
               <span>inclusive all taxes</span>
             </h2>
             <h2 className="cutoff price">
-              ₹ {productDetails.discountPrice} <span>60% off</span>
+              ₹ {productDetails.originalPrice} <span>60% off</span>
             </h2>
             <div className="size-selection">
               <div
@@ -261,6 +311,26 @@ function SingleProductDetails() {
           </section>
         </div>
       </section>
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical, horizontal }}
+          key={vertical + horizontal}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={severity}
+            sx={{ width: "100%" }}
+          >
+            <p style={{ fontFamily: "senRegular", fontSize: "1.2vw" }}>
+              {" "}
+              {message}
+            </p>
+          </Alert>
+        </Snackbar>
+      </Stack>
     </>
   );
 }
