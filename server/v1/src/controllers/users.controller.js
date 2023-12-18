@@ -39,16 +39,21 @@ router.get("/:userId", async (req, res) => {
 });
 
 router.post("/register", async (req, res) => {
-  const { id, name, password, joinedDate, address, state, pincode } = req.body;
-  const result = await addUser({
-    id,
-    name,
-    password,
-    joinedDate,
-    address,
-    state,
-    pincode,
-  });
+  const result = await addUser(
+    ({
+      id,
+      firstName,
+      lastName,
+      password,
+      email,
+      phoneNo,
+      joinedDate,
+      address,
+      state,
+      pincode,
+      city,
+    } = req.body)
+  );
   // console.log("result is : ", result);
   if (!result.err) {
     return res.status(200).json({

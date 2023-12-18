@@ -41,28 +41,37 @@ const getDataBasedOnCondition = async (tableName, conditions) => {
 };
 
 const insert = async (tableName, dataObj) => {
-  var sql = `INSERT INTO ${tableName} (`;
-  var values = [];
-  Object.keys(dataObj).forEach((key) => {
-    sql += `${key} ,`;
-    values.push(dataObj[key]);
-  });
-  sql = sql.slice(0, sql.length - 1); // removing the last coma ,;
-  sql += " ) VALUES (?)";
+  const keys = Object.keys(dataObj);
+  const values = Object.values(dataObj);
+
+  // Convert arrays to JSON strings for array-type columns
+  const convertedValues = values.map((value) =>
+    Array.isArray(value) ? JSON.stringify(value) : value
+  );
+
+  const placeholders = convertedValues.map(() => "?").join(", ");
+
+  const sql = `INSERT INTO ${tableName} (${keys.join(
+    ", "
+  )}) VALUES (${placeholders})`;
+
   try {
-    var result = await db
+    const result = await db
       .promise()
-      .query(sql, [values])
+      .query(sql, convertedValues)
       .catch((err) => {
         return {
-          message: "Error ini SQL",
+          message: "Error in SQL",
           err: err.message,
+          // sql,
           code: err.code,
         };
       });
+
     if (Array.isArray(result)) {
       return result[0];
     }
+
     if (result.err) {
       return result;
     }

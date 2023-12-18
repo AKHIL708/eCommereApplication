@@ -89,7 +89,7 @@ function UserAccount() {
       size: null,
     },
   ]);
-  console.log(Object.keys(orderHistoryData[0]));
+  // console.log(Object.keys(orderHistoryData[0]));
   const orderGroups = _.groupBy(orderHistoryData, "groupedOrderId");
   // console.log(orderGroups);
 

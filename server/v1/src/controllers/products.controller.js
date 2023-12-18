@@ -11,28 +11,22 @@ const {
   deleteProduct,
 } = require("../models/products.model");
 const handleErorrAndResponse = require("../utils/errorHandlingResponse");
-const multer = require("multer");
-//Configuration for Multer
-const multerStorage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, __dirname + "../components/photos/");
-  },
-});
-const upload = multer({
-  storage: multerStorage,
-});
+const fireBaseApp = require("../utils/fireBaseConfig.js");
+const {
+  getStorage,
+  ref,
+  uploadBytes,
+  getDownloadURL,
+  getMetadata,
+  listAll,
+} = require("firebase/storage");
 
-// id varchar(200) PK
-// name varchar(150)
-// category varchar(150)
-// Availability int
-// price int
-// mSizeAvl int
-// lSizeAvl int
-// sSizeAvl int
-// xlSizeAvl int
-// description varchar(300)
-// images
+const multer = require("multer");
+const storage = getStorage(fireBaseApp);
+
+// Multer Configuration
+const storageMulter = multer.memoryStorage();
+const upload = multer({ storage: storageMulter });
 
 router.get("/", async (req, res) => {
   const result = await getAllProducts();
@@ -90,25 +84,24 @@ router.get("/getByCategory/:categoryVal", async (req, res) => {
   handleErorrAndResponse(result, res);
 });
 
-router.post("/add", async (req, res) => {
-  const result = await addProduct(
-    ({
-      id,
-      pName,
-      category,
-      Availability,
-      originalPrice,
-      mSizeAvl,
-      lSizeAvl,
-      sSizeAvl,
-      xlSizeAvl,
-      description,
-      images,
-      discountPrice,
-    } = req.body)
-  );
-  handleErorrAndResponse(result, res);
+router.post("/add", upload.array("images", 5), async (req, res) => {
+  try {
+    const downloadURLs = await Promise.all(
+      req.files.map(async (file) => {
+        const { downloadURL, contentType } = await uploadToFirebase(file);
+        res.setHeader("Content-Type", contentType);
+        res.setHeader("Content-Disposition", "inline; filename=image.jpg");
+        return downloadURL;
+      })
+    );
+    const data = req.body;
+    const result = await addProduct(data, downloadURLs);
+    handleErorrAndResponse(result, res);
+  } catch (err) {
+    res.status(500).json({ err, error: "Internal Server Error" });
+  }
 });
+
 router.post("/review/add", async (req, res) => {
   const result = await addProductReview(
     ({ id, productId, userId, postedOn, description } = req.body)
@@ -125,5 +118,20 @@ router.post("/delete/:productId", async (req, res) => {
   ]);
   handleErorrAndResponse(result, res);
 });
+
+const uploadToFirebase = async (file) => {
+  const storageRef = ref(storage, `images/${file.originalname}`);
+  await uploadBytes(storageRef, file.buffer);
+  const downloadURL = await getDownloadURL(storageRef);
+
+  // Optionally, set headers for inline display
+  const metadata = await getMetadata(storageRef);
+  const contentType = metadata.contentType;
+
+  return {
+    downloadURL,
+    contentType,
+  };
+};
 
 module.exports = router;

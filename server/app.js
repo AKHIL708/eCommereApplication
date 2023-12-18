@@ -8,6 +8,7 @@ const userController = require("./v1/src/controllers/users.controller");
 const productController = require("./v1/src/controllers/products.controller");
 const ordersController = require("./v1/src/controllers/orders.controller");
 const cartItemsController = require("./v1/src/controllers/cart.controller");
+const imageController = require("./v1/src/controllers/images.controller");
 
 if (process.env.NODE_ENV == "dev") {
   dotenv.config({ path: ".env.dev" });
@@ -28,11 +29,13 @@ app.use((req, res, next) => {
   res.set("Cache-Control", "no-store");
   next();
 });
+app.use(express.json());
 
 app.use("/v1/users", userController);
 app.use("/v1/products", productController);
 app.use("/v1/orders", ordersController);
 app.use("/v1/cartItems", cartItemsController);
+app.use("/v1/uploads", imageController);
 
 __dirname = path.resolve();
 
@@ -49,7 +52,7 @@ if (process.env.NODE_ENV == "production") {
 
 //error handling
 app.use((err, req, res, next) => {
-  log.error(err.message);
+  // log.error(err.message);
   res.status(err.status || 500).json({
     message: err.message,
   });

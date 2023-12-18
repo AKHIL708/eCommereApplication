@@ -1,8 +1,14 @@
-const { insert, getAll, getDataBasedOnCondition, DeleteRow } = require("../utils/dbFunctions");
+const {
+  insert,
+  getAll,
+  getDataBasedOnCondition,
+  DeleteRow,
+} = require("../utils/dbFunctions");
 const tableName = "products";
 
-const addProduct = async (data) => {
-  const result = await insert(tableName, data);
+const addProduct = async (data, imageUrl) => {
+  const finalData = { ...data, images: imageUrl };
+  const result = await insert(tableName, finalData);
   return result;
 };
 

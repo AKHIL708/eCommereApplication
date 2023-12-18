@@ -1,22 +1,28 @@
 import React, { useState } from "react";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import PhoneIcon from "@mui/icons-material/Phone";
 import "./CheckOut.scss";
 
 function CheckOut() {
+  // initailly fetch the address from users table from sending the userID saved in cookies and then show the address in the inputs and when updated also update the user table
   const [showSection, setShowSection] = useState("address");
+  const [methodOfPayment, setMethodOfpayment] = useState("");
   const [addressData, setAddressData] = useState({
-    firstName: "",
-    lastName: "",
-    city: "",
-    phoneNo: "",
-    address: "",
-    state: "",
-    pinCode: "",
+    id: "",
+    firstName: "Jarapla",
+    lastName: "Akhil NK",
+    password: "852485252",
+    email: "aakhiljay06@gmail.com",
+    phoneNo: "9618134708",
+    joinedDate: "today",
+    address: "5-9-953 gunfoundry beside three temple hyderguda",
+    state: "Telangana",
+    pinCode: "500029",
+    city: "Hyderabad",
   });
   const { firstName, lastName, city, phoneNo, address, state, pinCode } =
     addressData;
-
   const handleAddressChange = (key, data) => {
     setAddressData({ ...addressData, [key]: data });
   };
@@ -37,6 +43,9 @@ function CheckOut() {
       setShowSection("address");
     }
   };
+  const placeOrder = () => {
+    window.alert(methodOfPayment);
+  };
 
   return (
     <>
@@ -48,30 +57,51 @@ function CheckOut() {
           {showSection == "address" ? (
             <>
               <section id="address">
-                {/* <header>
-                  <h1>Address</h1>
-                </header> */}
-                <div className="row">
-                  <p>
-                    {firstName} {lastName}
-                  </p>
-                  <p>{address}</p>
-                  <p>
-                    {city} City {pinCode}
-                  </p>
-                  <p>{state}</p>
-                  <p>India</p>
-                  <p>PhoneNo : {phoneNo}</p>
-
+                <div className="col">
+                  <div className="row">
+                    <p>
+                      {firstName} {lastName}
+                    </p>
+                    <p>{address}</p>
+                    <p>
+                      {city} City {pinCode}
+                    </p>
+                    <p>{state}</p>
+                    <p>India</p>
+                    <p>Phone No : {phoneNo}</p>
+                  </div>
+                  <div className="btn">
+                    <button onClick={() => setShowSection("edit-address")}>
+                      {" "}
+                      <EditIcon className="edit-icon" /> Edit Address
+                    </button>
+                  </div>
                 </div>
-                <div
-                  className="btn"
-                  onClick={() => setShowSection("edit-address")}
-                >
-                  <button>
-                    {" "}
-                    <EditIcon className="edit-icon" /> Edit Address
-                  </button>
+                <div className="col">
+                  {/* <header>
+                    <h1>payment Method</h1>
+                  </header> */}
+                  <div className="row">
+                    <input
+                      type="radio"
+                      value="COD"
+                      onChange={(e) => setMethodOfpayment(e.target.value)}
+                      checked={methodOfPayment === "COD"}
+                    />
+                    <h1>Cash On Delivery</h1>
+                  </div>
+                  <div className="row">
+                    <input
+                      type="radio"
+                      value="UPI"
+                      onChange={(e) => setMethodOfpayment(e.target.value)}
+                      checked={methodOfPayment === "UPI"}
+                    />
+                    <h1>UPI</h1>
+                  </div>
+                  <div className="row">
+                    <button onClick={() => placeOrder()}>Place Order</button>
+                  </div>
                 </div>
               </section>
             </>
@@ -112,6 +142,8 @@ function CheckOut() {
                         }
                       />
                     </div>
+                  </div>
+                  <div className="col">
                     <div className="row">
                       {" "}
                       <p>Address</p>
@@ -162,6 +194,8 @@ function CheckOut() {
                         }
                       />
                     </div>
+                  </div>
+                  <div className="col">
                     <div className="row">
                       {" "}
                       <p>phone</p>
@@ -193,7 +227,7 @@ function CheckOut() {
             <></>
           )}
         </div>
-        <div className="col"></div>
+        {/* <div className="col"></div> */}
       </section>
     </>
   );
