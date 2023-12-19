@@ -31,7 +31,7 @@ const getDataBasedOnCondition = async (tableName, conditions) => {
 
     // Execute the SQL query using the database connection
     let [result] = await db.promise().query(sql, values);
-
+    // console.log("db result : " + result);
     // Return the result (an array of rows) to the caller
     return result.length > 0 ? result : null; // Return the first result or null if no result
   } catch (err) {

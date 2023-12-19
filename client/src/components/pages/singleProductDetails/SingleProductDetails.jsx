@@ -63,32 +63,10 @@ function SingleProductDetails() {
       data: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Suscipit nam veniam tempore dicta dolore praesentium dolores architecto eaque inventore voluptates itaque, fugit temporibus ratione facilis nesciunt mollitia quisquam quibusdam quas.",
     },
   ]);
-  const [productDetails, setProductDetails] = useState({
-    id: "UpdateProductId",
-    pName: "Product Name",
-    category: "clothes",
-    Availability: 5,
-    originalPrice: 500,
-    mSizeAvl: 1,
-    lSizeAvl: 2,
-    sSizeAvl: 1,
-    xlSizeAvl: 1,
-    description:
-      "best product you can use in winter season which cannot be imaged ",
-    images: [shoeImage, categoryBook, categoryTech],
-    discountPrice: 400,
-    isBestDeal: "yes",
-  });
+  const [productDetails, setProductDetails] = useState([]);
 
-  const [totalProductsAvl, setTotalProductsAvl] = useState(
-    productDetails.xlSizeAvl +
-      productDetails.mSizeAvl +
-      productDetails.sSizeAvl +
-      productDetails.lSizeAvl
-  );
-  const [highLightImage, setHighLightImage] = useState(
-    productDetails.images[0]
-  );
+  const [totalProductsAvl, setTotalProductsAvl] = useState(0);
+  const [highLightImage, setHighLightImage] = useState(null);
 
   const handleSizeClick = (size) => {
     setSelectColor(size);
@@ -135,10 +113,10 @@ function SingleProductDetails() {
           productId,
           quantity: productQuantityAdded,
           size: productSize,
-          imageUrl: "asdf",
-          pName: productDetails.pName,
-          discountedPrice: productDetails.discountPrice,
-          originalPrice: productDetails.originalPrice,
+          imageUrl: highLightImage,
+          pName: productDetails[0].pName,
+          discountedPrice: productDetails[0].discountPrice,
+          originalPrice: productDetails[0].originalPrice,
         },
       ];
       setAddItemsToCart((prevCart) => {
@@ -160,7 +138,33 @@ function SingleProductDetails() {
     }
   }, [addItemsToCart]); // This will run whenever addItemsToCart changes
 
+  const fetchProductDetailsById = async () => {
+    const url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/${productId}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("error fetching productdetails : ", error);
+      return;
+    }
+    const data = await response.json();
+    // let productImages = JSON.parse(data.result[0].images);
+    let result = data.result;
+    // console.log(result);
+    setProductDetails(result);
+    let productImages = JSON.parse(result[0].images);
+    setHighLightImage(productImages[0]);
+    setTotalProductsAvl(result[0].Availability);
+  };
   useEffect(() => {
+    fetchProductDetailsById();
     if (Cookies.get("cartItems") != undefined) {
       setAddItemsToCart(JSON.parse(Cookies.get("cartItems")));
       // console.log(JSON.parse(Cookies.get("cartItems")));
@@ -171,93 +175,112 @@ function SingleProductDetails() {
     <>
       <ScrollToTop />
       <section id="product-details">
-        <div className="top-details">
-          <div className="col">
-            <div
-              className="store-img"
-              style={{ backgroundImage: `url(${highLightImage})` }}
-            ></div>
-            <div className="diff-images">
-              {productDetails.images.map((data, index) => {
-                return (
-                  <>
-                    {" "}
+        {productDetails.length > 0 &&
+          productDetails.map((data, index) => {
+            let productImages = JSON.parse(data.images);
+            // console.log(data.images);
+            return (
+              <div className="top-details">
+                <div className="col">
+                  <div
+                    className="store-img"
+                    style={{ backgroundImage: `url(${highLightImage})` }}
+                  ></div>
+                  <div className="diff-images">
+                    {productImages.map((data, index) => {
+                      return (
+                        <>
+                          {" "}
+                          <div
+                            key={index}
+                            className="box"
+                            style={{ backgroundImage: `url(${data})` }}
+                            onClick={() => setHighLightImage(data)}
+                          ></div>
+                        </>
+                      );
+                    })}
+                  </div>
+                </div>
+                <div className="col">
+                  <h1>{data.pName}</h1>
+                  <p className="Desp">{data.description}</p>
+                  <h2 className="price">
+                    ₹ {data.discountPrice}
+                    <span>inclusive all taxes</span>
+                  </h2>
+                  <h2 className="cutoff price">
+                    ₹ {data.originalPrice} <span>60% off</span>
+                  </h2>
+                  <div className="size-selection">
                     <div
-                      key={index}
-                      className="box"
-                      style={{ backgroundImage: `url(${data})` }}
-                      onClick={() => setHighLightImage(data)}
-                    ></div>
-                  </>
-                );
-              })}
-            </div>
-          </div>
-          <div className="col">
-            <h1>{productDetails.pName}</h1>
-            <p className="Desp">{productDetails.description}</p>
-            <h2 className="price">
-              ₹ {productDetails.discountPrice}
-              <span>inclusive all taxes</span>
-            </h2>
-            <h2 className="cutoff price">
-              ₹ {productDetails.originalPrice} <span>60% off</span>
-            </h2>
-            <div className="size-selection">
-              <div
-                className={`size ${selectColor === "S" ? "change-color" : ""}`}
-                onClick={() => handleSizeClick("S")}
-              >
-                S
-              </div>
-              <div
-                className={`size ${selectColor === "M" ? "change-color" : ""}`}
-                onClick={() => handleSizeClick("M")}
-              >
-                M
-              </div>
-              <div
-                className={`size ${selectColor === "L" ? "change-color" : ""}`}
-                onClick={() => handleSizeClick("L")}
-              >
-                L
-              </div>
-              <div
-                className={`size ${selectColor === "XL" ? "change-color" : ""}`}
-                onClick={() => handleSizeClick("XL")}
-              >
-                XL
-              </div>
-            </div>
-            <div className="quantity-to-buy">
-              <header>
-                <h1>Quantity</h1>
-              </header>
-              <div className="boxes">
-                <div className="box">
-                  <p className="icon" onClick={() => handleQuantityLess()}>
-                    -
-                  </p>
+                      className={`size ${
+                        selectColor === "S" ? "change-color" : ""
+                      }`}
+                      onClick={() => handleSizeClick("S")}
+                    >
+                      S
+                    </div>
+                    <div
+                      className={`size ${
+                        selectColor === "M" ? "change-color" : ""
+                      }`}
+                      onClick={() => handleSizeClick("M")}
+                    >
+                      M
+                    </div>
+                    <div
+                      className={`size ${
+                        selectColor === "L" ? "change-color" : ""
+                      }`}
+                      onClick={() => handleSizeClick("L")}
+                    >
+                      L
+                    </div>
+                    <div
+                      className={`size ${
+                        selectColor === "XL" ? "change-color" : ""
+                      }`}
+                      onClick={() => handleSizeClick("XL")}
+                    >
+                      XL
+                    </div>
+                  </div>
+                  <div className="quantity-to-buy">
+                    <header>
+                      <h1>Quantity</h1>
+                    </header>
+                    <div className="boxes">
+                      <div className="box">
+                        <p
+                          className="icon"
+                          onClick={() => handleQuantityLess()}
+                        >
+                          -
+                        </p>
+                      </div>
+                      <div className="box">
+                        <p>{productQuantityAdded}</p>
+                      </div>
+                      <div className="box">
+                        <p className="icon" onClick={() => handleAddQuantity()}>
+                          +
+                        </p>
+                      </div>
+                    </div>
+                    <div className="items-left">
+                      <p>{totalProductsAvl - 1} left hurry up .</p>
+                    </div>
+                  </div>
+                  <div className="add-to-cart">
+                    <button onClick={() => AddToCart()}>Add to Cart</button>
+                    <button>Buy Now</button>
+                  </div>
                 </div>
-                <div className="box">
-                  <p>{productQuantityAdded}</p>
-                </div>
-                <div className="box">
-                  <p className="icon" onClick={() => handleAddQuantity()}>
-                    +
-                  </p>
-                </div>
               </div>
-              <div className="items-left">
-                <p>{totalProductsAvl - 1} left hurry up .</p>
-              </div>
-            </div>
-            <div className="add-to-cart">
-              <button onClick={() => AddToCart()}>Add to Cart</button>
-              <button>Buy Now</button>
-            </div>
-          </div>
-        </div>
+            );
+          })}
+
         <div className="product-reviews">
           <header>
             <h1>Product Reviews</h1>

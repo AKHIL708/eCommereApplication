@@ -238,7 +238,7 @@ function CartItems() {
                     >
                       <div
                         className="store-image"
-                        style={{ backgroundImage: `url(${shoeImage})` }}
+                        style={{ backgroundImage: `url(${data.imageUrl})` }}
                       ></div>
                       <div className="product-desp">
                         <p>{data.pName}</p>

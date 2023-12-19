@@ -91,12 +91,9 @@ function Home() {
   useEffect(() => {
     AOS.init();
   }, []);
-  const imageUrl =
-    "https://firebasestorage.googleapis.com/v0/b/ecommerceapplication-2a15d.appspot.com/o/images%2FIMG_6577.JPG?alt=media&token=b9e7d85c-aea7-4d0b-aba8-c201700d2d42";
   return (
     <>
       <section id="Home">
-        <img src={imageUrl} alt="" />
         <header>
           <div className="col">
             <div className="heading">

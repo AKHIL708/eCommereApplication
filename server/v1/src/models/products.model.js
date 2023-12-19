@@ -7,7 +7,8 @@ const {
 const tableName = "products";
 
 const addProduct = async (data, imageUrl) => {
-  const finalData = { ...data, images: imageUrl };
+  let id = Date.now();
+  const finalData = { ...data, images: imageUrl, id: id };
   const result = await insert(tableName, finalData);
   return result;
 };
@@ -71,22 +72,22 @@ const getSingleProductReview = async (data) => {
 };
 
 const getProductsByCategory = async (data) => {
-  try {
-    const result = getDataBasedOnCondition(tableName, data);
-    return result;
-  } catch (error) {
-    // Handle the error
-    const errorResult = {
-      message: "Error in getProductsByCategory",
-      err: error.message,
-      code: error.code,
-      details: {
-        tableName,
-        condition,
-      },
-    };
-    return errorResult;
-  }
+  // try {
+  const result = await getDataBasedOnCondition(tableName, data);
+  return result;
+  // } catch (error) {
+  //   // Handle the error
+  //   const errorResult = {
+  //     message: "Error in getProductsByCategory",
+  //     err: error.message,
+  //     code: error.code,
+  //     details: {
+  //       tableName,
+  //       condition,
+  //     },
+  //   };
+  //   return errorResult;
+  // }
 };
 
 const deleteProduct = async (data) => {

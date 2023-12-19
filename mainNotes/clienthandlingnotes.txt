@@ -7,3 +7,7 @@ ans. when a user places the order we will add the userid , id , groupedId
            to get all the orders which where placed at once for that "
            and we will get all the data of the orders placed by the user and then we wil
            separate them in the client section in order hitory
+
+
+2. when a user add item to cart also add those items to cart items DB table also if we have data
+ in db table show orelse show data from Cookies if there when user logs in ---

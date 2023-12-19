@@ -81,6 +81,7 @@ router.get("/getByCategory/:categoryVal", async (req, res) => {
       value: req.params.categoryVal,
     },
   ]);
+  console.log(result);
   handleErorrAndResponse(result, res);
 });
 

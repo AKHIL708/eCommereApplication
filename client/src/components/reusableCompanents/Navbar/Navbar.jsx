@@ -17,6 +17,8 @@ function Navbar() {
     if (confirm) {
       window.alert("logged Out");
       Cookies.remove("userToken");
+      Cookies.remove("cartItems");
+      setTotalCartItems(0);
       setUserToken(null);
       navigate("/login");
     } else {

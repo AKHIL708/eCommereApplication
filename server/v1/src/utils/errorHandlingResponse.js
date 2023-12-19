@@ -12,11 +12,14 @@ const handleErorrAndResponse = (result, res) => {
   if (!result.err) {
     return res.status(200).json({
       message: "success",
-      result,
+      result: result,
     });
   } else {
-    // console.log(`${result}, ${result.message} `);
-    return res.status(500).json(result);
+    console.error(result); // Log the error details
+    return res.status(500).json({
+      message: "Internal Server Error",
+      error: result,
+    });
   }
 };
 module.exports = handleErorrAndResponse;
