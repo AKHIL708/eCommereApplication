@@ -12,6 +12,7 @@ import ScrollToTop from "./components/reusableCompanents/Navbar/scrollToTop/Scro
 import CartItems from "./components/pages/cartItems/CartItems";
 import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
 import Login from "./components/reusableCompanents/login/Login.jsx";
+import Loader from "./components/reusableCompanents/waitingLoader/Loader.jsx";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
             />
             <Route exact path="/cart" element={<CartItems />} />
             <Route exact path="/check-out" element={<CheckOut />} />
+            <Route exact path="/order-received" element={<Loader />} />
             {/* if no route matched  */}
             <Route exact path="*" element={<NotFound />} />
           </Routes>

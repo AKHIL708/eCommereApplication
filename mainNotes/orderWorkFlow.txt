@@ -1,0 +1,5 @@
+1  select product add to cart and then checkout 
+2. fetch userDetails using userId
+3. get the userId using Cookies userDetails which was setUp in login.jsx
+4. after fetching update the userDetails state and fetching fetchUserDeatils(id) passing an id 
+5. if address and Phone exist then good else show the edit-address section . 

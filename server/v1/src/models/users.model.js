@@ -1,7 +1,7 @@
 const {
   insert,
   getAll,
-  getOne,
+  getDataBasedOnCondition,
   update,
   DeleteRow,
 } = require("../utils/dbFunctions");
@@ -17,7 +17,7 @@ const getAllUsers = async () => {
   return result;
 };
 const getOneUser = async (data) => {
-  const result = getOne(tableName, data);
+  const result = getDataBasedOnCondition(tableName, data);
   return result;
 };
 const updateUser = async (data, id) => {

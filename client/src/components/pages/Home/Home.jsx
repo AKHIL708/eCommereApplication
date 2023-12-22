@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import homeHeaderImage from "../../../assets/images/shoeImage.png";
 import booksImage from "../../../assets/images/category-books.jpg";
 import clothesImages from "../../../assets/images/category-Clothes.jpg";
@@ -88,8 +88,30 @@ function Home() {
       rating: "create",
     },
   ];
+  const [todaysBestDeals, setTodaysBestDeals] = useState([]);
+  const fetchBestDealsProducts = async () => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    const url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/bestDeals/yes`;
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = response.text();
+      console.error("error getting deals : ", error);
+      return;
+    }
+    const data = await response.json();
+    console.log(data);
+    if (data.message == "success") {
+      setTodaysBestDeals(data.result);
+    }
+  };
   useEffect(() => {
     AOS.init();
+    fetchBestDealsProducts();
   }, []);
   return (
     <>
@@ -155,7 +177,8 @@ function Home() {
             <h1>Todays Best Deals For You!</h1>
           </header>
           <div className="deal-boxes">
-            {todaysBest.map((data, index) => {
+            {todaysBestDeals.map((data, index) => {
+              let images = JSON.parse(data.images);
               return (
                 <>
                   <div
@@ -164,15 +187,19 @@ function Home() {
                   >
                     <div
                       className="store-img"
-                      style={{ backgroundImage: `url(${data.url})` }}
+                      style={{ backgroundImage: `url(${images[0]})` }}
                     ></div>
                     <div className="details">
                       <div className="name-and-price">
                         <h1>{data.pName}</h1>
-                        <p>{data.price}</p>
+                        <p>{data.originalPrice}</p>
                       </div>
-                      <p className="desc">{data.desc}</p>
-                      <p>{data.rating}</p>
+                      <p className="desc">
+                        {data.description.length > 30
+                          ? data.description.substring(0, 30) + "..."
+                          : data.description}
+                      </p>
+                      {/* <p>{data.rating}</p> */}
                       <button>Add to Cart</button>
                     </div>
                   </div>

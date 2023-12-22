@@ -4,7 +4,7 @@ import Cookies from "js-cookie";
 
 const UserAuthContextProvider = ({ children }) => {
   const [userToken, setUserToken] = useState(null);
-  let isUserExist = Cookies.get("userToken");
+  let isUserExist = Cookies.get("userDetails");
   useEffect(() => {
     if (isUserExist) {
       setUserToken(isUserExist);

@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import shoeImage from "../../../assets/images/shoeImage.png";
 import CartItemsContext from "../../../context/cartItemsHandlingContextApi/CartItemsContext";
 import Cookies from "js-cookie";
@@ -29,7 +30,7 @@ function CartItems() {
   });
   const { vertical, horizontal, open, message, severity } = openNotification;
 
-  const handleClick = ({ open, message, severity }) => {
+  const handleNotificationBar = ({ open, message, severity }) => {
     // console.log(message, open, severity);
     setOpenNotification({
       ...openNotification,
@@ -56,26 +57,26 @@ function CartItems() {
   const [cartItems, setCartItems] = useState([]);
   const [showSection, setShowSection] = useState("address");
   const [methodOfPayment, setMethodOfpayment] = useState("");
-  const [addressData, setAddressData] = useState({
-    id: "",
-    firstName: "Jarapla",
-    lastName: "Akhil NK",
-    password: "852485252",
-    email: "aakhiljay06@gmail.com",
-    phoneNo: "9618134708",
-    joinedDate: "today",
-    address: "5-9-953 gunfoundry beside three temple hyderguda",
-    state: "Telangana",
-    pinCode: "500029",
-    city: "Hyderabad",
+  const [userDetails, setUserDetails] = useState({
+    id: null,
+    firstName: null,
+    lastName: null,
+    password: null,
+    email: null,
+    phoneNo: null,
+    joinedDate: null,
+    address: null,
+    state: null,
+    pincode: null,
+    city: null,
   });
-  const { firstName, lastName, city, phoneNo, address, state, pinCode } =
-    addressData;
+  const { id, firstName, lastName, city, phoneNo, address, state, pincode } =
+    userDetails;
   const handleAddressChange = (key, data) => {
-    setAddressData({ ...addressData, [key]: data });
+    setUserDetails({ ...userDetails, [key]: data });
   };
 
-  const EditAddress = () => {
+  const EditAddress = async () => {
     if (
       firstName.length < 5 ||
       lastName.length < 5 ||
@@ -83,17 +84,97 @@ function CartItems() {
       phoneNo.length < 10 ||
       address.length < 5 ||
       state.length < 5 ||
-      pinCode.length < 5
+      pincode.length < 5
     ) {
       window.alert("Invalid Details Found !");
     } else {
-      // window.alert("Edited Successfully");
-      handleClick({
-        open: true,
-        message: "Address Updated",
-        severity: "success",
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+
+      var raw = JSON.stringify({
+        id: id,
+        data: [
+          {
+            column: "firstName",
+            value: firstName,
+          },
+          {
+            column: "lastName",
+            value: lastName,
+          },
+          {
+            column: "phoneNo",
+            value: phoneNo,
+          },
+          {
+            column: "address",
+            value: address,
+          },
+          {
+            column: "state",
+            value: state,
+          },
+          {
+            column: "pincode",
+            value: pincode,
+          },
+          {
+            column: "city",
+            value: city,
+          },
+        ],
       });
-      setShowSection("address");
+
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV}/users/update`,
+        requestOptions
+      );
+      if (!response.ok) {
+        const error = await response.text();
+        console.log(error);
+        return;
+      }
+      const data = await response.json();
+      console.log(data);
+      if (data.message == "success") {
+        fetchUserDetails(userDetails.id);
+        handleNotificationBar({
+          open: true,
+          message: "Address Updated",
+          severity: "success",
+        });
+        setShowSection("address");
+      }
+    }
+  };
+  const fetchUserDetails = async (userId) => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    let url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/users/${userId}`;
+
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = await response.text();
+      console.log(error);
+      return;
+    }
+    const data = await response.json();
+    if (data.message == "success") {
+      let results = data.result[0];
+      console.log(results);
+      setUserDetails(results);
+      Cookies.set("userDetails", JSON.stringify(results));
     }
   };
 
@@ -134,7 +215,7 @@ function CartItems() {
       Cookies.set("cartItems", JSON.stringify(updatedArr));
       setCartItems(JSON.parse(Cookies.get("cartItems")));
       setTotalCartItems(updatedArr);
-      handleClick({
+      handleNotificationBar({
         message: "item removed SuccessFully !",
         severity: "info",
         open: true,
@@ -146,14 +227,14 @@ function CartItems() {
   const ApplyCouponCode = () => {
     if (couponInput == couponCode.validCoupon) {
       setCheckoutTotalAmount((prevAmount) => prevAmount - 100);
-      handleClick({
+      handleNotificationBar({
         message: "Coupon Code Applied.",
         severity: "success",
         open: true,
       });
       setShowCouponSection(false);
     } else {
-      handleClick({
+      handleNotificationBar({
         message: "Entered Coupon Does't Exist",
         severity: "error",
         open: true,
@@ -162,48 +243,109 @@ function CartItems() {
     }
   };
   const handleCheckout = () => {
-    if (Cookies.get("userToken") != undefined) {
-      setShowCheckout(true);
-      setTimeout(() => {
-        window.scrollTo({
-          top: 900,
-          behavior: "smooth",
-        });
-      }, 200);
+    if (Cookies.get("userDetails") != undefined) {
+      if (phoneNo == null || address == null) {
+        setShowCheckout(true);
+        setShowSection("edit-address");
+        setTimeout(() => {
+          window.scrollTo({
+            top: 900,
+            behavior: "smooth",
+          });
+        }, 200);
+      } else {
+        setShowCheckout(true);
+        setShowSection("address");
+        setTimeout(() => {
+          window.scrollTo({
+            top: 900,
+            behavior: "smooth",
+          });
+        }, 200);
+      }
     } else {
       navigate("/login");
     }
   };
-  const placeOrder = () => {
+  const placeOrder = async () => {
     // console.log(methodOfPayment == '')
-    window.alert(
-      "1. clear the cookies Cart Items \n 2. clear the context totalCartItems \n 3. add the order placed details in the table and then navigate to orders page and show the order details fetch  "
-    );
+    // window.alert(
+    //   "1. clear the cookies Cart Items \n 2. clear the context totalCartItems \n 3. add the order placed details in the table and then navigate to orders page and show the order details fetch  "
+    // );
 
     if (methodOfPayment == "") {
-      handleClick({
+      handleNotificationBar({
         open: true,
         message: "Select Payment Method",
         severity: "warning",
       });
     } else {
-      handleClick({
-        open: true,
-        message: "orderPlaced!",
-        severity: "success",
+      let cartItemsData = JSON.parse(Cookies.get("cartItems"));
+      let groupedOrderId = uuid();
+      const convertToOrderDetailedarr = cartItemsData.map((item) => {
+        return {
+          id: uuid(), // You can use a more appropriate way to generate IDs
+          groupedOrderId,
+          productId: item.productId,
+          userId: userDetails.id,
+          placedTimeAt: createDateString(), // You may want to replace this with the actual timestamp
+          modeOfPayment: methodOfPayment,
+          orderStatus: "pending",
+          quantity: item.quantity,
+          size: item.size,
+          totalPriceValue: checkoutTotalAmount,
+        };
       });
-      navigate("/");
+      console.log(convertToOrderDetailedarr);
+      var myHeaders = new Headers();
+      myHeaders.append("Content-Type", "application/json");
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: JSON.stringify(convertToOrderDetailedarr),
+        redirect: "follow",
+      };
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV}/orders/addMany`,
+        requestOptions
+      );
+      if (!response.ok) {
+        const error = await response.text();
+        console.error("error in adding order :", error);
+        return;
+      }
+      const data = await response.json();
+      if (data.message == "success") {
+        console.log(data);
+        handleNotificationBar({
+          open: true,
+          message: "orderPlaced!",
+          severity: "success",
+        });
+        Cookies.remove("cartItems");
+        setTotalCartItems([]);
+        navigate("/order-received");
+      } else {
+        handleNotificationBar({
+          open: true,
+          message: "order not placed!",
+          severity: "error",
+        });
+      }
     }
   };
+  const createDateString = () => {
+    const currentDate = new Date();
 
-  useEffect(() => {
-    if (Cookies.get("cartItems") !== undefined) {
-      let cookiesdata = JSON.parse(Cookies.get("cartItems"));
-      // console.log(cookiesdata);
-      setCartItems(cookiesdata);
-      setOriginalMRP(calculateMRP());
-    }
-  }, []);
+    // Extract components
+    const day = currentDate.getDate();
+    const month = currentDate.toLocaleString("default", { month: "long" });
+    const year = currentDate.getFullYear();
+
+    // Create the date string
+    const dateString = `${month} ${day}, ${year}`;
+    return dateString;
+  };
 
   useEffect(() => {
     let mrp = calculateMRP();
@@ -212,6 +354,23 @@ function CartItems() {
     setDiscountedMRP(discountedMRP);
     calCheckoutAmount(calculateMRP(), calculateDiscount());
   }, [cartItems]);
+
+  useEffect(() => {
+    if (Cookies.get("cartItems") !== undefined) {
+      let getCookiesCartItemsData = JSON.parse(Cookies.get("cartItems"));
+      // console.log(getCookiesCartItemsData);
+      setCartItems(getCookiesCartItemsData);
+      setOriginalMRP(calculateMRP());
+    }
+
+    // here below just getting the
+    //  id from cookies and then fetching from backend using fetchUserDetails
+    if (Cookies.get("userDetails") != undefined) {
+      // console.log(Cookies.get("userDetails"));
+      let getUserDataFromCookies = JSON.parse(Cookies.get("userDetails"));
+      fetchUserDetails(getUserDataFromCookies.id);
+    }
+  }, []);
 
   return (
     <>
@@ -334,7 +493,7 @@ function CartItems() {
                             </p>
                             <p>{address}</p>
                             <p>
-                              {city} City {pinCode}
+                              {city} City {pincode}
                             </p>
                             <p>{state}</p>
                             <p>India</p>
@@ -445,10 +604,10 @@ function CartItems() {
                               <p>Pin Code</p>
                               <input
                                 type="text"
-                                value={pinCode}
+                                value={pincode}
                                 placeholder="Pin Code"
                                 onChange={(e) =>
-                                  handleAddressChange("pinCode", e.target.value)
+                                  handleAddressChange("pincode", e.target.value)
                                 }
                               />
                             </div>

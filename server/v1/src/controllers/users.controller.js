@@ -20,6 +20,7 @@ router.get("/", async (req, res) => {
     });
   }
 });
+
 router.get("/:userId", async (req, res) => {
   const result = await getOneUser([
     {
@@ -27,14 +28,15 @@ router.get("/:userId", async (req, res) => {
       value: req.params.userId,
     },
   ]);
-  if (result.err) {
-    console.log(`${result.err}, ${result.message} `);
-    return res.status(500).json(result);
-  } else {
+  // console.log("id :", req.params.userId, "data: ", result);
+  if (!(result == null)) {
     return res.status(200).json({
       message: "success",
       result,
     });
+  } else {
+    // console.log(`${result.err}, ${result.message} `);
+    return res.status(500).json(result);
   }
 });
 
@@ -74,12 +76,12 @@ router.post("/login", async (req, res) => {
       message: "fail User not found",
     });
   } else {
-    let token = encrypt(result);
+    let token = encrypt(result[0]);
     if (!result.err) {
       return res.status(200).json({
         message: "success",
-        // result,
-        token, // this creates a token by taking results data and sends the response
+        result,
+        // token, // this creates a token by taking results data and sends the response
       });
     } else {
       console.log(`${result.err}, ${result.message} `);

@@ -152,13 +152,13 @@ $dummyBorder: 1px solid black;
         .store-img {
           border-radius: 1vw 1vw 0 0;
           background-repeat: no-repeat;
-          background-size: cover;
+          background-size: contain;
           background-position: center;
           height: 20vw;
           width: 100%;
         }
         .details {
-          padding: 1vw 1vw 1.2vw 1vw;
+          padding: 2vw 1.5vw 2vw 1.5vw;
           .name-and-price {
             display: flex;
             align-items: center;

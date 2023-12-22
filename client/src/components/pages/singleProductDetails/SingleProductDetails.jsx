@@ -1,4 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
+import { v4 as uuid } from "uuid";
 import Cookies from "js-cookie";
 import { useParams } from "react-router-dom";
 import shoeImage from "../../../assets/images/shoeImage.png";
@@ -26,7 +27,7 @@ function SingleProductDetails() {
   });
   const { vertical, horizontal, open, message, severity } = state;
 
-  const handleClick = ({ open, message, severity }) => {
+  const handleNotificationBar = ({ open, message, severity }) => {
     console.log(message, open, severity);
     setState({
       ...state,
@@ -54,17 +55,9 @@ function SingleProductDetails() {
     name: "",
     data: "",
   });
-  const [productReviews, setProductReviews] = useState([
-    {
-      id: "1",
-      time: "dec 1st",
-      productId,
-      name: "userName",
-      data: "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Suscipit nam veniam tempore dicta dolore praesentium dolores architecto eaque inventore voluptates itaque, fugit temporibus ratione facilis nesciunt mollitia quisquam quibusdam quas.",
-    },
-  ]);
-  const [productDetails, setProductDetails] = useState([]);
+  const [productReviews, setProductReviews] = useState([]);
 
+  const [productDetails, setProductDetails] = useState([]);
   const [totalProductsAvl, setTotalProductsAvl] = useState(0);
   const [highLightImage, setHighLightImage] = useState(null);
 
@@ -88,15 +81,6 @@ function SingleProductDetails() {
       setProductQuantityAdded(productQuantityAdded - 1);
       setTotalProductsAvl(totalProductsAvl + 1);
     }
-  };
-
-  const AddReview = () => {
-    console.log(reviewData);
-    setProductReviews((prev) => [...prev, reviewData]);
-    setReviewData({
-      name: "",
-      data: "",
-    });
   };
 
   const AddToCart = () => {
@@ -125,7 +109,10 @@ function SingleProductDetails() {
         Cookies.set("cartItems", JSON.stringify(updatedCartItems), {
           expires: 7,
         });
-        handleClick({ open: true, message: "Item Added Successfully !" });
+        handleNotificationBar({
+          open: true,
+          message: "Item Added Successfully !",
+        });
         return updatedCartItems;
       });
     }
@@ -163,13 +150,98 @@ function SingleProductDetails() {
     setHighLightImage(productImages[0]);
     setTotalProductsAvl(result[0].Availability);
   };
+  const fetchProductReviewsById = async () => {
+    var requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+
+    let response = await fetch(
+      `${
+        import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+      }/products/review/${productId}`,
+      requestOptions
+    );
+    if (!response.ok) {
+      const error = await response.text();
+      console.log("error getting reviews :", error);
+      return;
+    }
+    const data = await response.json();
+    console.log(data);
+    if (data.result == "no data found !") {
+      setProductReviews([]);
+    } else {
+      setProductReviews(data.result);
+    }
+  };
+  const AddProductReview = async () => {
+    let userDetails;
+    if (Cookies.get("userDetails") != undefined) {
+      userDetails = JSON.parse(Cookies.get("userDetails"));
+    }
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    // console.log(userDetails);
+    var raw = JSON.stringify({
+      id: uuid(),
+      productId: productId,
+      userId: userDetails.id,
+      postedOn: createDateString(),
+      userName: reviewData.name,
+      description: reviewData.data,
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    let response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV}/products/review/add`,
+      requestOptions
+    );
+    if (!response.ok) {
+      const error = await response.text();
+      console.log("error getting reviews :", error);
+      return;
+    }
+    const data = await response.json();
+    if (data.message == "success") {
+      console.log(data);
+      fetchProductReviewsById();
+      setReviewData({
+        name: "",
+        data: "",
+      });
+      handleNotificationBar({
+        open: true,
+        message: "review added successfully",
+        severity: "success",
+      });
+    }
+  };
+
   useEffect(() => {
     fetchProductDetailsById();
+    fetchProductReviewsById();
     if (Cookies.get("cartItems") != undefined) {
       setAddItemsToCart(JSON.parse(Cookies.get("cartItems")));
       // console.log(JSON.parse(Cookies.get("cartItems")));
     }
   }, []);
+
+  const createDateString = () => {
+    let currDate = new Date();
+    const date = currDate.getDate();
+    const month = currDate.toLocaleString("default", { month: "long" });
+    const year = currDate.getFullYear();
+
+    let dateString = `${month} ${date} ${year} `;
+    return dateString;
+  };
 
   return (
     <>
@@ -286,19 +358,27 @@ function SingleProductDetails() {
             <h1>Product Reviews</h1>
           </header>
           <div className="reviews">
-            {productReviews.map((data, index) => {
-              return (
-                <>
-                  <div className="row">
-                    <header>
-                      <h1>{data.name}</h1>
-                      <p>{data.time}</p>
-                    </header>
-                    <p className="review-desc">{data.data}</p>
-                  </div>
-                </>
-              );
-            })}
+            {productReviews.length > 0 ? (
+              <>
+                {productReviews.map((data, index) => {
+                  return (
+                    <>
+                      <div className="row">
+                        <header>
+                          <h1>{data.userName}</h1>
+                          <p>{data.postedOn}</p>
+                        </header>
+                        <p className="review-desc">{data.description}</p>
+                      </div>
+                    </>
+                  );
+                })}
+              </>
+            ) : (
+              <>
+                <h1>No Reviews To show</h1>
+              </>
+            )}
           </div>
         </div>
         <div className="add-review">
@@ -329,7 +409,7 @@ function SingleProductDetails() {
               />
             </div>
             <div className="row">
-              <button onClick={() => AddReview("data")}>Submit</button>
+              <button onClick={() => AddProductReview()}>Submit</button>
             </div>
           </section>
         </div>

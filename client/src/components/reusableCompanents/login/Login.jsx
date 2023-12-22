@@ -23,8 +23,8 @@ function Login() {
   });
   const { vertical, horizontal, open, message, severity } = state;
 
-  const handleClick = ({ open, message, severity }) => {
-    console.log(message, open, severity);
+  const handleNotificationBar = ({ open, message, severity }) => {
+    // console.log(message, open, severity);
     setState({
       ...state,
       open,
@@ -42,27 +42,64 @@ function Login() {
   const [loading, setLoading] = useState(true);
   const { userToken, setUserToken } = useContext(userAuthContext);
   const [userCredentails, setUserCredentails] = useState({
-    userName: "",
+    email: "",
     password: "",
   });
-  const HandleUserLogin = () => {
-    const { userName, password } = userCredentails;
-    if (userName.length < 5 || password.length < 5) {
-      handleClick({
+  const HandleUserLogin = async () => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify([
+      {
+        column: "email",
+        value: userCredentails.email,
+      },
+      {
+        column: "password",
+        value: userCredentails.password,
+      },
+    ]);
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const response = await fetch(
+      `${import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV}/users/login`,
+      requestOptions
+    );
+
+    if (!response.ok) {
+      const error = await response.text();
+      handleNotificationBar({
         open: true,
         message: "invalid Credentials",
         severity: "error",
       });
-    } else {
-      Cookies.set("userToken", "asdfgoasdfaksdfashdflasdf");
-      let storedCookieToken = Cookies.get("userToken");
-      setUserToken(storedCookieToken);
+      console.log(error);
+      return;
+    }
+
+    const data = await response.json();
+    if (data.message == "success") {
+      // token receives
+      let result = data.result[0];
+      console.log(result);
+      Cookies.set("userDetails", JSON.stringify(result));
+      let storedUserData = JSON.parse(Cookies.get("userDetails"));
+      setUserToken(storedUserData);
       navigate("/");
     }
   };
-  if (userToken != null) {
-    return navigate("/");
-  }
+
+  useEffect(() => {
+    if (userToken != null) {
+      return navigate("/");
+    }
+  });
 
   return (
     <>
@@ -72,17 +109,17 @@ function Login() {
             <h1>Login</h1>
           </header>
           <div className="row">
-            <p>User Name</p>
+            <p>Email</p>
             <input
-              value={userCredentails.userName}
+              value={userCredentails.email}
               onChange={(e) =>
                 setUserCredentails({
                   ...userCredentails,
-                  userName: e.target.value,
+                  email: e.target.value,
                 })
               }
               type="text"
-              placeholder="UserName or Email"
+              placeholder="Email"
             />
           </div>
           <div className="row">
