@@ -76,7 +76,7 @@ function CategoryProducts() {
           ) : (
             <>
               {" "}
-              {categoryProducts.length > 0 &&
+              {categoryProducts.length > 0 ?
                 categoryProducts.map((data, index) => {
                   const images = JSON.parse(data.images);
                   return (
@@ -105,7 +105,7 @@ function CategoryProducts() {
                       </div>
                     </>
                   );
-                })}
+                }) : <><h1> no data to show</h1> </>}
             </>
           )}
         </div>

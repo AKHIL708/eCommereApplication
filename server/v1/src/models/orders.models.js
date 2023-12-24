@@ -44,6 +44,24 @@ const getOrdersByUserId = async (data) => {
     return errorResult;
   }
 };
+const getOrderByGroupedOrderId = async (data) => {
+  try {
+    const result = await getDataBasedOnCondition(tableName, data);
+    return result;
+  } catch (error) {
+    // Handle the error
+    const errorResult = {
+      message: "error in getOrdersByUserId",
+      err: error.message,
+      code: error.code,
+      details: {
+        tableName,
+        data,
+      },
+    };
+    return errorResult;
+  }
+};
 
 const addOrder = async (data) => {
   try {
@@ -106,5 +124,6 @@ module.exports = {
   addOrder,
   addManyOrder,
   getOrdersByUserId,
+  getOrderByGroupedOrderId,
   updateOrder,
 };

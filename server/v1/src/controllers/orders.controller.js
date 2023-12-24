@@ -3,6 +3,7 @@ const {
   addOrder,
   getAllOrders,
   getOrdersByUserId,
+  getOrderByGroupedOrderId,
   updateOrder,
   addManyOrder,
 } = require("../models/orders.models");
@@ -19,6 +20,16 @@ router.get("/user/:userId", async (req, res) => {
     {
       column: "userId",
       value: req.params.userId,
+    },
+  ]);
+  handleErorrAndResponse(result, res);
+});
+
+router.get("/user/placedOrders/:groupedOrderId", async (req, res) => {
+  const result = await getOrderByGroupedOrderId([
+    {
+      column: "groupedOrderId",
+      value: req.params.groupedOrderId,
     },
   ]);
   handleErorrAndResponse(result, res);

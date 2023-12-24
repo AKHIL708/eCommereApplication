@@ -79,92 +79,15 @@ function UserAccount() {
     confirmNewPassword: "",
   });
   const [isPasswordVerify, setIsPasswordVerify] = useState(true);
-  const [userOrderHistory, setUserOrderHistory] = useState([]);
-
-  const [orderHistoryData, setOrderHistoryData] = useState([
-    {
-      id: "00",
-      groupedOrderId: "1",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "1",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "2",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "2",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "2",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "3",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-    {
-      id: "00",
-      groupedOrderId: "3",
-      productId: "1234",
-      userId: "1235399889",
-      placedTimeAt: "today",
-      modeOfPayment: "upi",
-      orderStatus: "success",
-      quantity: 5,
-      size: null,
-    },
-  ]);
-  // console.log(Object.keys(orderHistoryData[0]));
-  const orderGroups = _.groupBy(orderHistoryData, "groupedOrderId");
-  // console.log(orderGroups);
+  const [orderHistoryData, setOrderHistoryData] = useState(null);
+  const [particularOrderHistory, setParticularOrderHistory] = useState({
+    show: false,
+    data: [],
+    productDetails: null,
+  });
 
   const currentPathname = window.location.pathname.substring(0, 13);
+
   const handleClick = (data) => {
     setActiveLink(data);
     setSection(data);
@@ -387,29 +310,75 @@ function UserAccount() {
         groups[groupedOrderId].push(item);
         return groups;
       }, {});
+      // console.log(groupedItems);
       setOrderHistoryData(groupedItems);
+    }
+  };
+
+  const fetchSingleOrderHistory = async (groupedOrderId) => {
+    const url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/orders/user/placedOrders/${groupedOrderId}`;
+    let requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(error);
+      return;
+    }
+    let data = await response.json();
+    if (data.message == "success") {
+      console.log(data);
+
+      let storeOrderHistoryProductDetails = [];
+      for (let i = 0; i < data.result.length; i++) {
+        storeOrderHistoryProductDetails.push(
+          fetchProductDetails(data.result[i].productId)
+        );
+      }
+
+      // wait until all promises are resolved ...
+      const resolvedProductDetails = await Promise.all(
+        storeOrderHistoryProductDetails
+      );
+
+      setParticularOrderHistory({
+        ...particularOrderHistory,
+        show: true,
+        data: data.result,
+        productDetails: resolvedProductDetails,
+      });
+
+      // setOrderHistoryProductDetails(resolvedProductDetails);
+    }
+  };
+
+  const fetchProductDetails = async (productId) => {
+    let url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/${productId}`;
+    let requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = await response.text();
+      console.error(error);
+      return;
+    }
+    let data = await response.json();
+    if (data.message == "success") {
+      console.log(data);
+      return data.result[0];
     }
   };
 
   useEffect(() => {
     fetchUserDetails(userId);
-    const itemsArray = [
-      { id: 1, name: "Item 1" },
-      { id: 2, name: "Item 2" },
-      { id: 3, name: "Item 3" },
-      { id: 1, name: "Item 4" },
-      { id: 4, name: "Item 5" },
-      { id: 4, name: "Item 6" },
-      { id: 1, name: "Item 7" },
-      { id: 8, name: "Item 8" },
-    ];
-    const groupedItems = itemsArray.reduce((groups, item) => {
-      const id = item.id;
-      groups[id] = groups[id] || [];
-      groups[id].push(item);
-      return groups;
-    }, {});
-    // console.log(groupedItems);
     fetchUserOrderHistory();
   }, []);
 
@@ -756,25 +725,142 @@ function UserAccount() {
           {section == "wish-list" ? <> </> : <></>}
           {section == "order-history" ? (
             <>
-              {Object.entries(orderHistoryData).map(
-                ([groupedOrderId, items]) => (
-                  <div
-                    key={groupedOrderId}
-                    onClick={() => window.alert(groupedOrderId)}
-                  >
-                    <h2>Section {groupedOrderId}</h2>
-                    <ul>
-                      {items.map((item) => (
-                        <li key={item.id}>
-                          {/* Render your item details here */}
-                          Product ID: {item.productId}, Quantity:{" "}
-                          {item.quantity}, Size: {item.size}
-                          length : {items.length}
-                        </li>
-                      ))}
-                    </ul>
+              {!particularOrderHistory.show && (
+                <>
+                  {" "}
+                  <section id="order-history">
+                    {orderHistoryData != null ? (
+                      <>
+                        {Object.entries(orderHistoryData).map(
+                          ([groupedOrderId, items]) => (
+                            <div
+                              key={groupedOrderId}
+                              onClick={() =>
+                                fetchSingleOrderHistory(groupedOrderId)
+                              }
+                              className="order-history-card"
+                            >
+                              {/* Render details only once for each groupedOrderId */}
+                              {items.length > 0 && (
+                                <>
+                                  <div className="row">
+                                    <h1>Order Id</h1>
+                                    <h2>:</h2>
+                                    <p>{items[0].id}</p>
+                                  </div>
+                                  <div className="row">
+                                    <h1>Total Product </h1>
+                                    <h2>:</h2>
+                                    <p>{items.length}</p>
+                                  </div>
+                                  <div className="row">
+                                    <h1>Total Price </h1>
+                                    <h2>:</h2>
+                                    <p>{items[0].totalPriceValue}</p>
+                                  </div>
+                                  <div className="row">
+                                    <h1>MOD </h1>
+                                    <h2>:</h2>
+                                    <p>{items[0].modeOfPayment}</p>
+                                  </div>
+                                  <div className="row">
+                                    <h1>Placed On </h1>
+                                    <h2>:</h2>
+                                    <p>{items[0].placedTimeAt}</p>
+                                  </div>
+                                </>
+                              )}
+                            </div>
+                          )
+                        )}
+                      </>
+                    ) : (
+                      <>
+                        <h1>No order history</h1>
+                      </>
+                    )}
+                  </section>
+                </>
+              )}
+              {particularOrderHistory.show && (
+                <>
+                  <div id="product-history-cards">
+                    {particularOrderHistory.data.map((data, index) => {
+                      let image = JSON.parse(
+                        particularOrderHistory.productDetails[index].images
+                      );
+                      // console.log(image);
+                      return (
+                        <>
+                          <div className="history-card">
+                            <div className="col">
+                              <div
+                                className="store-img"
+                                onClick={() =>
+                                  navigate(
+                                    `/productDetail/${particularOrderHistory.productDetails[index].id}`
+                                  )
+                                }
+                                style={{ backgroundImage: `url(${image[0]})` }}
+                              ></div>
+                            </div>
+                            <div className="col">
+                              {" "}
+                              <div className="row">
+                                <h1>pname </h1>
+                                <span>:</span>
+                                <p>
+                                  {
+                                    particularOrderHistory.productDetails[index]
+                                      .pName
+                                  }
+                                </p>
+                              </div>
+                              <div className="row">
+                                <h1>MOD </h1>
+                                <span>:</span>
+                                <p>{data.modeOfPayment}</p>
+                              </div>
+                              <div className="row">
+                                <h1>status </h1>
+                                <span>:</span>
+                                <p>{data.orderStatus}</p>
+                              </div>
+                              <div className="row">
+                                <h1>quantity </h1>
+                                <span>:</span>
+
+                                <p>{data.quantity}</p>
+                              </div>
+                              <div className="row">
+                                <h1>Price </h1>
+                                <span>:</span>
+                                <p>
+                                  {
+                                    particularOrderHistory.productDetails[index]
+                                      .discountPrice
+                                  }
+                                </p>
+                              </div>
+                            </div>
+                          </div>
+                        </>
+                      );
+                    })}
+                    <div className="back-btn">
+                      <button
+                        onClick={() =>
+                          setParticularOrderHistory({
+                            ...particularOrderHistory,
+                            show: false,
+                          })
+                        }
+                      >
+                        Go Back
+                      </button>
+                    </div>
                   </div>
-                )
+                </>
               )}
             </>
           ) : (
