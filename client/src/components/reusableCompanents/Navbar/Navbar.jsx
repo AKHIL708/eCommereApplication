@@ -11,20 +11,62 @@ import "./Navbar.scss";
 function Navbar() {
   const { totalCartItems, setTotalCartItems } = useContext(CartItemsContext);
   const { userToken, setUserToken } = useContext(userAuthContext);
+  const [inputVal, setInputVal] = useState("");
+  const [productNames, setProductsName] = useState([]);
+  const [resultsArr, setResultsArr] = useState([]);
+
   const navigate = useNavigate();
   const logOut = () => {
     let confirm = window.confirm("Are Your Sure!");
     if (confirm) {
       window.alert("logged Out");
-      Cookies.remove("userToken");
+      Cookies.remove("userDetails");
       Cookies.remove("cartItems");
       setTotalCartItems(0);
       setUserToken(null);
-      navigate("/login");
+      navigate("/user/login");
     } else {
       window.alert("Ok!");
     }
   };
+  const fetchAllProductsNames = async () => {
+    const url = `${import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV}/products`;
+    const requestOptions = {
+      method: "GET",
+      redirect: "follow",
+    };
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = await response.text();
+      console.log("error in getting products : ", error);
+      return;
+    }
+
+    const data = await response.json();
+
+    if (data.message == "success") {
+      let result = data.result;
+      setProductsName(result);
+    }
+  };
+  const filters = () => {
+    let filteredResultsArr = [];
+    if (inputVal.length == 0) {
+      setResultsArr([]);
+    } else {
+      for (let i = 0; i < productNames.length; i++) {
+        if (productNames[i].pName.includes(inputVal)) {
+          filteredResultsArr.push(productNames[i]);
+        }
+      }
+      setResultsArr(filteredResultsArr);
+    }
+  };
+
+  useEffect(() => {
+    filters();
+  }, [inputVal]);
+
   useEffect(() => {
     // console.log(Cookies.get("cartItems"));
     // console.log("totalCarLenth : ", totalCartItems);
@@ -35,6 +77,7 @@ function Navbar() {
       // console.log(cookiesdata);
       setTotalCartItems(cookiesdata);
     }
+    fetchAllProductsNames();
   }, []);
 
   return (
@@ -47,8 +90,35 @@ function Navbar() {
             </h1>
           </header>
           <div className="input-sec">
-            <input type="text" placeholder="search" />
+            <input
+              type="text"
+              placeholder="search"
+              value={inputVal}
+              onChange={(e) => setInputVal(e.target.value)}
+            />
             <SearchIcon className="icon" />
+            {resultsArr.length > 0 && (
+              <>
+                <div className="search-results">
+                  {resultsArr.map((data, index) => {
+                    return (
+                      <>
+                        <h1
+                          onClick={() => {
+                            navigate(`/productDetail/${data.id}`);
+                            setInputVal('');
+                          }}
+                        >
+                          {data.pName.length > 12
+                            ? data.pName.substring(0, 20) + "..."
+                            : data.pName}
+                        </h1>
+                      </>
+                    );
+                  })}
+                </div>
+              </>
+            )}
           </div>
           <div className="account-section">
             {userToken !== null ? (
@@ -61,9 +131,9 @@ function Navbar() {
                       <h1 className="top-header">
                         <Link to="/user/account">My Account</Link>
                       </h1>
-                      <h1>
+                      {/* <h1>
                         <Link to="/user/orderHistory">Order History</Link>
-                      </h1>
+                      </h1> */}
                       <h1 onClick={() => logOut()}>LogOut</h1>
                     </div>
                   </div>
@@ -75,7 +145,7 @@ function Navbar() {
                   {" "}
                   <h1>
                     {" "}
-                    <Link to="/login">Login</Link>
+                    <Link to="/user/login">Login</Link>
                   </h1>
                 </div>
               </>

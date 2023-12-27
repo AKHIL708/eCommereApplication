@@ -14,6 +14,7 @@
     align-items: center;
     justify-content: space-evenly;
     .deal-box {
+      // border: 1px solid rebeccapurple;
       width: 26vw;
       height: 40vw;
       transition: all 0.2s ease;
@@ -21,9 +22,8 @@
       position: relative;
       margin-bottom: 3vw;
       bottom: 0;
-      // overflow: hidden;
-      box-shadow: 10px 10px 39px -8px rgba(0, 0, 0, 0.25);
-      // border: 1px solid black;
+      border-radius: 1vw;
+      box-shadow: 10px 10px 39px -4px rgba(0, 0, 0, 0.25);
       .store-img {
         border-radius: 1vw 1vw 0 0;
         background-repeat: no-repeat;
@@ -31,6 +31,7 @@
         background-position: center;
         height: 20vw;
         width: 100%;
+        margin: 0.5vw 0;
       }
       .details {
         padding: 1vw 1.2vw 1.2vw 1.2vw;
@@ -39,7 +40,7 @@
           display: flex;
           align-items: center;
           justify-content: space-between;
-          padding: 1vw 0;
+          padding: 0.6vw 0;
           h1,
           p {
             font-family: "poppinsRegular";

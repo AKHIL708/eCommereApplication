@@ -84,7 +84,11 @@ function SingleProductDetails() {
   };
 
   const AddToCart = () => {
-    if (productSize == null) {
+    if (
+      (productDetails[0].category == "clothes" ||
+        productDetails[0].category == "womens-wear") &&
+      productSize == null
+    ) {
       window.alert("Please select the size!");
     } else {
       // add to cart items using api call
@@ -284,40 +288,43 @@ function SingleProductDetails() {
                   <h2 className="cutoff price">
                     ₹ {data.originalPrice} <span>60% off</span>
                   </h2>
-                  <div className="size-selection">
-                    <div
-                      className={`size ${
-                        selectColor === "S" ? "change-color" : ""
-                      }`}
-                      onClick={() => handleSizeClick("S")}
-                    >
-                      S
+                  {(data.category == "clothes" ||
+                    data.category == "womens-wear") && (
+                    <div className="size-selection">
+                      <div
+                        className={`size ${
+                          selectColor === "S" ? "change-color" : ""
+                        }`}
+                        onClick={() => handleSizeClick("S")}
+                      >
+                        S
+                      </div>
+                      <div
+                        className={`size ${
+                          selectColor === "M" ? "change-color" : ""
+                        }`}
+                        onClick={() => handleSizeClick("M")}
+                      >
+                        M
+                      </div>
+                      <div
+                        className={`size ${
+                          selectColor === "L" ? "change-color" : ""
+                        }`}
+                        onClick={() => handleSizeClick("L")}
+                      >
+                        L
+                      </div>
+                      <div
+                        className={`size ${
+                          selectColor === "XL" ? "change-color" : ""
+                        }`}
+                        onClick={() => handleSizeClick("XL")}
+                      >
+                        XL
+                      </div>
                     </div>
-                    <div
-                      className={`size ${
-                        selectColor === "M" ? "change-color" : ""
-                      }`}
-                      onClick={() => handleSizeClick("M")}
-                    >
-                      M
-                    </div>
-                    <div
-                      className={`size ${
-                        selectColor === "L" ? "change-color" : ""
-                      }`}
-                      onClick={() => handleSizeClick("L")}
-                    >
-                      L
-                    </div>
-                    <div
-                      className={`size ${
-                        selectColor === "XL" ? "change-color" : ""
-                      }`}
-                      onClick={() => handleSizeClick("XL")}
-                    >
-                      XL
-                    </div>
-                  </div>
+                  )}
                   <div className="quantity-to-buy">
                     <header>
                       <h1>Quantity</h1>

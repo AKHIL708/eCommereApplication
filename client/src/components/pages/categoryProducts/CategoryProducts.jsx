@@ -76,7 +76,7 @@ function CategoryProducts() {
           ) : (
             <>
               {" "}
-              {categoryProducts.length > 0 ?
+              {categoryProducts.length > 0 ? (
                 categoryProducts.map((data, index) => {
                   const images = JSON.parse(data.images);
                   return (
@@ -98,14 +98,23 @@ function CategoryProducts() {
                             </h1>
                             <p>₹{data.discountPrice}</p>
                           </div>
-                          <p className="desc">{data.description}</p>
+                          <p className="desc">
+                            {data.description.length > 30
+                              ? data.description.substring(0, 80)
+                              : data.description}
+                          </p>
                           {/* <p>{data.}</p> */}
                           <button>Add to Cart</button>
                         </div>
                       </div>
                     </>
                   );
-                }) : <><h1> no data to show</h1> </>}
+                })
+              ) : (
+                <>
+                  <h1> no data to show</h1>{" "}
+                </>
+              )}
             </>
           )}
         </div>

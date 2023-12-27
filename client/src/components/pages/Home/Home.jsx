@@ -3,6 +3,7 @@ import homeHeaderImage from "../../../assets/images/shoeImage.png";
 import booksImage from "../../../assets/images/category-books.jpg";
 import clothesImages from "../../../assets/images/category-Clothes.jpg";
 import shoesImages from "../../../assets/images/category-shoes.jpg";
+import womensWear from "../../../assets/images/womens-wear.jpg";
 import slippersImages from "../../../assets/images/category-slippers.jpg";
 import techImages from "../../../assets/images/category-tech.jpg";
 import { useNavigate } from "react-router-dom";
@@ -30,64 +31,62 @@ function Home() {
     },
     {
       id: 100,
-      url: shoesImages,
-      category: "shoes",
-    },
-    // {
-    //   url: slippersImages,
-    //   category: "Slippers",
-    // },
-  ];
-  const todaysBest = [
-    {
-      id: 12,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
-    },
-    {
-      id: 85456,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
-    },
-    {
-      id: 800000845,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
-    },
-    {
-      id: 800000845,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
-    },
-    {
-      id: 800000845,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
-    },
-    {
-      id: 800000845,
-      url: shoesImages,
-      pName: "Air Jordan",
-      price: "$2500",
-      desc: "so comfortable to wear and run",
-      rating: "create",
+      url: womensWear,
+      category: "womens-wear",
     },
   ];
+
+  // const todaysBest = [
+  //   {
+  //     id: 12,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  //   {
+  //     id: 85456,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  //   {
+  //     id: 800000845,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  //   {
+  //     id: 800000845,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  //   {
+  //     id: 800000845,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  //   {
+  //     id: 800000845,
+  //     url: shoesImages,
+  //     pName: "Air Jordan",
+  //     price: "$2500",
+  //     desc: "so comfortable to wear and run",
+  //     rating: "create",
+  //   },
+  // ];
+
   const [todaysBestDeals, setTodaysBestDeals] = useState([]);
   const fetchBestDealsProducts = async () => {
     var requestOptions = {
@@ -99,16 +98,18 @@ function Home() {
     }/products/bestDeals/yes`;
     const response = await fetch(url, requestOptions);
     if (!response.ok) {
-      const error = response.text();
+      const error = await response.text();
       console.error("error getting deals : ", error);
       return;
     }
     const data = await response.json();
-    console.log(data);
+    // console.log(data);
     if (data.message == "success") {
       setTodaysBestDeals(data.result);
     }
   };
+
+ 
   useEffect(() => {
     AOS.init();
     fetchBestDealsProducts();
@@ -119,7 +120,7 @@ function Home() {
         <header>
           <div className="col">
             <div className="heading">
-              <h1>Mounika55 Simple Shopping Solution</h1>
+              <h1>AK007 Simple Shopping Solution</h1>
             </div>
             <div className="para">
               <p>
@@ -191,12 +192,16 @@ function Home() {
                     ></div>
                     <div className="details">
                       <div className="name-and-price">
-                        <h1>{data.pName}</h1>
-                        <p>{data.originalPrice}</p>
+                        <h1>
+                          {data.pName.length > 12
+                            ? data.pName.substring(0, 12) + "..."
+                            : data.pName}
+                        </h1>
+                        <p>₹{data.originalPrice}</p>
                       </div>
                       <p className="desc">
                         {data.description.length > 30
-                          ? data.description.substring(0, 30) + "..."
+                          ? data.description.substring(0, 50) + "..."
                           : data.description}
                       </p>
                       {/* <p>{data.rating}</p> */}

@@ -205,6 +205,7 @@ function UserAccount() {
   };
 
   const verifyCurrentPassword = () => {
+    console.log(userDetails);
     if (currPassword == userDetails.password) {
       handleNotificationBar({
         open: true,
@@ -221,6 +222,7 @@ function UserAccount() {
       setCurrPassword("");
     }
   };
+
   const changePassword = async () => {
     if (
       handleNewPassword.newPassword !== handleNewPassword.confirmNewPassword
@@ -282,6 +284,7 @@ function UserAccount() {
         message: "password changed",
         severity: "success",
       });
+      fetchUserDetails(userId);
     }
   };
 

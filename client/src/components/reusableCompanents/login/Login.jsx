@@ -95,11 +95,11 @@ function Login() {
     }
   };
 
-  useEffect(() => {
-    if (userToken != null) {
-      return navigate("/");
-    }
-  });
+  // useEffect(() => {
+  //   if (userToken != null) {
+  //     return navigate("/");
+  //   }
+  // });
 
   return (
     <>

@@ -25,6 +25,24 @@
       justify-content: center;
       border-radius: 5vw;
       width: 28vw;
+      .search-results {
+        position: absolute;
+        padding: 0.8vw 1.4vw;
+        background-color: white;
+        width: 30vw;
+        box-shadow: 10px 10px 5px 0px rgba(0, 0, 0, 0.75);
+        top: 5.5vw;
+        border-radius: 0.5vw;
+        h1 {
+          cursor: pointer;
+          padding: 0.5vw 0;
+          font-size: 1.5vw;
+          transition: all 0.1s ease-in-out;
+        }
+        h1:hover {
+          font-size: 1.8vw;
+        }
+      }
 
       input {
         // background-color: red;

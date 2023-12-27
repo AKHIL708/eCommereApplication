@@ -264,7 +264,7 @@ function CartItems() {
         }, 200);
       }
     } else {
-      navigate("/login");
+      navigate("/user/login");
     }
   };
   const placeOrder = async () => {

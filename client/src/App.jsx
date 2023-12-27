@@ -12,7 +12,10 @@ import ScrollToTop from "./components/reusableCompanents/Navbar/scrollToTop/Scro
 import CartItems from "./components/pages/cartItems/CartItems";
 import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
 import Login from "./components/reusableCompanents/login/Login.jsx";
+import adminRoutesList from "./utils/roleBasedAccessSetUp/CreateAdminRoutes.jsx";
 import Loader from "./components/reusableCompanents/waitingLoader/Loader.jsx";
+import PrivateRoutes from "./utils/roleBasedAccessSetUp/privateRoutes.jsx";
+import AdminLogin from "./components/adminPages/login/AdminLogin.jsx";
 
 function App() {
   return (
@@ -23,7 +26,15 @@ function App() {
           <Navbar />
           <Routes>
             <Route exact path="/" element={<Home />} />
-            <Route exact path="/login" element={<Login />} />
+            <Route
+              exact
+              path="/user/login"
+              element={
+                <PrivateRoutes requiredRole={"user"}>
+                  <Login />
+                </PrivateRoutes>
+              }
+            />
             <Route exact path="/user/account/*" element={<UserAccount />} />
             <Route
               exact
@@ -38,6 +49,26 @@ function App() {
             <Route exact path="/cart" element={<CartItems />} />
             <Route exact path="/check-out" element={<CheckOut />} />
             <Route exact path="/order-received" element={<Loader />} />
+
+            {/* admin Login page  */}
+            <Route exact path="/admin/login" element={<AdminLogin />} />
+
+            {/* <Route exact path="/admin/login" element={adminRoutesList[1].componentRender} /> */}
+            {adminRoutesList.map((data, i) => {
+              // console.log(data);
+              return (
+                <Route
+                  key={`route-number-${i}`}
+                  path={`/admin/${data.path}`}
+                  element={
+                    <PrivateRoutes requiredRole={data.requiredRole}>
+                      {data.componentRender}
+                    </PrivateRoutes>
+                  }
+                />
+              );
+            })}
+
             {/* if no route matched  */}
             <Route exact path="*" element={<NotFound />} />
           </Routes>
