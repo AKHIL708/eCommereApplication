@@ -103,13 +103,12 @@ function Home() {
       return;
     }
     const data = await response.json();
-    // console.log(data);
+    console.log(data);
     if (data.message == "success") {
       setTodaysBestDeals(data.result);
     }
   };
 
- 
   useEffect(() => {
     AOS.init();
     fetchBestDealsProducts();
@@ -184,7 +183,7 @@ function Home() {
                 <>
                   <div
                     className="deal-box"
-                    onClick={() => navigate(`productDetail/${data.id}`)}
+                    onClick={() => navigate(`/productDetail/${data.id}`)}
                   >
                     <div
                       className="store-img"

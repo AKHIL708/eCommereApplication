@@ -2,6 +2,7 @@ const {
   insert,
   getAll,
   getDataBasedOnCondition,
+  update,
   DeleteRow,
 } = require("../utils/dbFunctions");
 const tableName = "products";
@@ -72,22 +73,13 @@ const getSingleProductReview = async (data) => {
 };
 
 const getProductsByCategory = async (data) => {
-  // try {
   const result = await getDataBasedOnCondition(tableName, data);
   return result;
-  // } catch (error) {
-  //   // Handle the error
-  //   const errorResult = {
-  //     message: "Error in getProductsByCategory",
-  //     err: error.message,
-  //     code: error.code,
-  //     details: {
-  //       tableName,
-  //       condition,
-  //     },
-  //   };
-  //   return errorResult;
-  // }
+};
+
+const updateProducts = async (data, id) => {
+  const result = update(tableName, data, id);
+  return result;
 };
 
 const deleteProduct = async (data) => {
@@ -119,4 +111,5 @@ module.exports = {
   addProductReview,
   getBestDealProducts,
   getSingleProductReview,
+  updateProducts,
 };

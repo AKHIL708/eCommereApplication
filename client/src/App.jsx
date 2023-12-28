@@ -7,10 +7,16 @@ import CategoryProducts from "./components/pages/categoryProducts/CategoryProduc
 import NotFound from "./components/pages/notFound/NotFound";
 import CartProvider from "./context/cartItemsHandlingContextApi/CartItemsContextProvider.jsx";
 import UserAuthContextProvider from "./context/userAuthContextApi/UserAuthContextProvider.jsx";
-import { Routes, Route } from "react-router-dom";
+import {
+  Routes,
+  Route,
+  useParams,
+  useNavigate,
+  useLocation,
+} from "react-router-dom";
 import ScrollToTop from "./components/reusableCompanents/Navbar/scrollToTop/ScrollToTop";
 import CartItems from "./components/pages/cartItems/CartItems";
-import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
+// import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
 import Login from "./components/reusableCompanents/login/Login.jsx";
 import adminRoutesList from "./utils/roleBasedAccessSetUp/CreateAdminRoutes.jsx";
 import Loader from "./components/reusableCompanents/waitingLoader/Loader.jsx";
@@ -18,6 +24,10 @@ import PrivateRoutes from "./utils/roleBasedAccessSetUp/privateRoutes.jsx";
 import AdminLogin from "./components/adminPages/login/AdminLogin.jsx";
 
 function App() {
+  const location = useLocation();
+  console.log(location.pathname.startsWith("/admin"));
+  let isAdmin = location.pathname.startsWith("/admin");
+
   return (
     <>
       <ScrollToTop />
@@ -47,7 +57,7 @@ function App() {
               element={<CategoryProducts />}
             />
             <Route exact path="/cart" element={<CartItems />} />
-            <Route exact path="/check-out" element={<CheckOut />} />
+            {/* <Route exact path="/check-out" element={<CheckOut />} /> */}
             <Route exact path="/order-received" element={<Loader />} />
 
             {/* admin Login page  */}

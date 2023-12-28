@@ -1,0 +1,147 @@
+#dashboard {
+  padding: 2vw 1.8vw;
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      font-family: "poppinsMedium";
+      font-size: 3.5vw;
+    }
+  }
+  .products-table-container {
+    // border: 1px solid black;
+    padding: 0.8vw;
+    // display: flex;
+    // align-items: center;
+    box-shadow: 3px 15px 83px -13px rgba(0, 0, 0, 0.38);
+    .table-header {
+      display: flex;
+      align-items: center;
+      padding-bottom: 0.5vw;
+      .row {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        // border: 1px solid black;
+        padding: 0.4vw 0;
+        margin: 0 0 0.5vw 0;
+        h1 {
+          font-family: "senBold";
+          font-size: 2.5vw;
+          color: rgb(0, 98, 209);
+        }
+      }
+      .row:nth-child(1) {
+        width: 6vw;
+      }
+      .row:nth-child(2) {
+        width: 50vw;
+      }
+      .row:nth-child(3) {
+        width: 15vw;
+      }
+      .row:nth-child(4) {
+        width: 12vw;
+      }
+      .row:nth-child(5) {
+        width: 12vw;
+      }
+    }
+    .table-data {
+      // display: flex;
+      .col {
+        display: flex;
+
+        .add-red-colour {
+          color: red !important;
+        }
+
+        .row {
+          padding: 0.8vw 0;
+          border-top: 1px solid #b2acac;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin: 0.4vw 0;
+          h1 {
+            font-family: "poppinsMedium";
+            font-size: 1.5vw;
+            .edit,
+            .delete {
+              cursor: pointer;
+              transition: all 0.2s ease;
+            }
+            .edit {
+              color: green;
+            }
+            .delete {
+              color: red;
+            }
+            .edit:hover,
+            .delete:hover {
+              transform: scale(1.2);
+            }
+          }
+        }
+        .row:nth-child(1) {
+          width: 6vw;
+        }
+        .row:nth-child(2) {
+          width: 50vw;
+        }
+        .row:nth-child(3) {
+          width: 15vw;
+        }
+        .row:nth-child(4) {
+          width: 12vw;
+        }
+        .row:nth-child(5) {
+          width: 12vw;
+        }
+      }
+    }
+  }
+}
+
+.modal {
+  .box {
+    padding: 1.5vw 5vw;
+    header {
+      display: flex;
+      align-items: center;
+      width: 100%;
+      // border: 1px solid black;
+      justify-content: center;
+      p {
+        font-family: "senBold";
+        font-size: 4.5vw;
+        color: rgb(47, 47, 47);
+      }
+    }
+    .container {
+      display: flex;
+      padding: 1vw 0;
+      align-items: center;
+      justify-content: space-between;
+      .store-img {
+        // border: 1px solid black;
+        height: 20vw;
+        width: 20vw;
+        background-repeat: no-repeat;
+        background-position: center;
+        background-size: contain;
+      }
+      h1 {
+        font-family: "poppinsMedium";
+        font-size: 3vw;
+      }
+    }
+    .buttons {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1.5vw 0;
+    }
+  }
+}

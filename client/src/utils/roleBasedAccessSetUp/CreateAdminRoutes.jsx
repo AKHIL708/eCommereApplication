@@ -1,4 +1,6 @@
-import Dashboard from "../../components/adminPages/Dashboard.jsx";
+import Dashboard from "../../components/adminPages/Dashboard/Dashboard.jsx";
+import EditProduct from "../../components/adminPages/EditProduct/EditProduct.jsx";
+import AddProduct from "../../components/adminPages/addProduct/AddProduct.jsx";
 import AdminLogin from "../../components/adminPages/login/AdminLogin.jsx";
 
 const adminRoutesList = [
@@ -11,6 +13,16 @@ const adminRoutesList = [
     path: "login",
     requiredRole: "admin",
     componentRender: <AdminLogin />,
+  },
+  {
+    path: "product/add",
+    requiredRole: "admin",
+    componentRender: <AddProduct />,
+  },
+  {
+    path: "product/edit/:productId",
+    requiredRole: "admin",
+    componentRender: <EditProduct />,
   },
 ];
 

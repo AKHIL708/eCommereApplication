@@ -9,10 +9,9 @@ import couponCode from "../../../utils/couponCode/couponCode";
 import Stack from "@mui/material/Stack";
 import EditIcon from "@mui/icons-material/Edit";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import Button from "@mui/material/Button";
 import Snackbar from "@mui/material/Snackbar";
 import MuiAlert from "@mui/material/Alert";
-import "../checkOut/CheckOut.scss";
+import "./CheckOut.scss";
 import "./CartItems.scss";
 
 const Alert = React.forwardRef(function Alert(props, ref) {
@@ -267,12 +266,70 @@ function CartItems() {
       navigate("/user/login");
     }
   };
-  const placeOrder = async () => {
-    // console.log(methodOfPayment == '')
-    // window.alert(
-    //   "1. clear the cookies Cart Items \n 2. clear the context totalCartItems \n 3. add the order placed details in the table and then navigate to orders page and show the order details fetch  "
-    // );
 
+  const updateProductAvailabilityCountAfterOrder = async (
+    ordersPlacedProductDetails
+  ) => {
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+    let url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/update`;
+
+    // await Promise.all(
+    ordersPlacedProductDetails.forEach(async (data, index) => {
+      let currentQuantity = await fetchProductDetailsById(data.productId);
+      // console.log(`${data.productId} : ${result}`);
+      var raw = JSON.stringify({
+        id: `${data.productId}`,
+        data: [
+          {
+            column: "Availability",
+            value: `${currentQuantity - data.quantity}`,
+          },
+        ],
+      });
+      var requestOptions = {
+        method: "POST",
+        headers: myHeaders,
+        body: raw,
+        redirect: "follow",
+      };
+
+      const response = await fetch(url, requestOptions);
+      if (!response.ok) {
+        let error = await response.text();
+        console.log(error);
+        return;
+      }
+      const resultsReceived = await response.json();
+      console.log(resultsReceived);
+    });
+  };
+
+  const fetchProductDetailsById = async (productId) => {
+    const url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/${productId}`;
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    if (!response.ok) {
+      const error = await response.text();
+      console.error("error fetching productdetails : ", error);
+      return;
+    }
+    const data = await response.json();
+    // let productImages = JSON.parse(data.result[0].images);
+    let result = data.result[0];
+    return result.Availability;
+  };
+
+  const placeOrder = async () => {
     if (methodOfPayment == "") {
       handleNotificationBar({
         open: true,
@@ -317,6 +374,7 @@ function CartItems() {
       const data = await response.json();
       if (data.message == "success") {
         console.log(data);
+        updateProductAvailabilityCountAfterOrder(convertToOrderDetailedarr);
         handleNotificationBar({
           open: true,
           message: "orderPlaced!",

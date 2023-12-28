@@ -8,6 +8,7 @@ const {
   getSingleProductDetails,
   getSingleProductReview,
   getProductsByCategory,
+  updateProducts,
   deleteProduct,
 } = require("../models/products.model");
 const handleErorrAndResponse = require("../utils/errorHandlingResponse");
@@ -101,6 +102,12 @@ router.post("/add", upload.array("images", 5), async (req, res) => {
   } catch (err) {
     res.status(500).json({ err, error: "Internal Server Error" });
   }
+});
+
+router.post("/update", async (req, res) => {
+  const { data, id } = req.body;
+  const result = await updateProducts(data, id);
+  handleErorrAndResponse(result, res);
 });
 
 router.post("/review/add", async (req, res) => {

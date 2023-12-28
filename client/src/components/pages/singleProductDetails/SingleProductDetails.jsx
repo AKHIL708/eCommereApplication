@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { v4 as uuid } from "uuid";
 import Cookies from "js-cookie";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import shoeImage from "../../../assets/images/shoeImage.png";
 import categoryTech from "../../../assets/images/category-tech.jpg";
 import categoryBook from "../../../assets/images/category-books.jpg";
@@ -18,6 +18,7 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 function SingleProductDetails() {
+  const navigate = useNavigate();
   const [state, setState] = useState({
     open: false,
     message: "hello",
@@ -183,6 +184,13 @@ function SingleProductDetails() {
     let userDetails;
     if (Cookies.get("userDetails") != undefined) {
       userDetails = JSON.parse(Cookies.get("userDetails"));
+    } else {
+      navigate("/user/login");
+      return handleNotificationBar({
+        open: true,
+        message: "Login To add Reivew",
+        severity: "info",
+      });
     }
     var myHeaders = new Headers();
     myHeaders.append("Content-Type", "application/json");
@@ -325,36 +333,43 @@ function SingleProductDetails() {
                       </div>
                     </div>
                   )}
-                  <div className="quantity-to-buy">
-                    <header>
-                      <h1>Quantity</h1>
-                    </header>
-                    <div className="boxes">
-                      <div className="box">
-                        <p
-                          className="icon"
-                          onClick={() => handleQuantityLess()}
-                        >
-                          -
-                        </p>
+                  {data.Availability > 0 ? (
+                    <>
+                      <div className="quantity-to-buy">
+                        <header>
+                          <h1>Quantity</h1>
+                        </header>
+                        <div className="boxes">
+                          <div className="box">
+                            <p
+                              className="icon"
+                              onClick={() => handleQuantityLess()}
+                            >
+                              -
+                            </p>
+                          </div>
+                          <div className="box">
+                            <p>{productQuantityAdded}</p>
+                          </div>
+                          <div className="box">
+                            <p
+                              className="icon"
+                              onClick={() => handleAddQuantity()}
+                            >
+                              +
+                            </p>
+                          </div>
+                        </div>
+                        <div className="items-left">
+                          <p>{totalProductsAvl - 1} left hurry up .</p>
+                        </div>
                       </div>
-                      <div className="box">
-                        <p>{productQuantityAdded}</p>
+                      <div className="add-to-cart">
+                        <button onClick={() => AddToCart()}>Add to Cart</button>
+                        {/* <button>Buy Now</button> */}
                       </div>
-                      <div className="box">
-                        <p className="icon" onClick={() => handleAddQuantity()}>
-                          +
-                        </p>
-                      </div>
-                    </div>
-                    <div className="items-left">
-                      <p>{totalProductsAvl - 1} left hurry up .</p>
-                    </div>
-                  </div>
-                  <div className="add-to-cart">
-                    <button onClick={() => AddToCart()}>Add to Cart</button>
-                    <button>Buy Now</button>
-                  </div>
+                    </>
+                  ) : <h1 style={{color : "red"}}>Out Of Stock</h1> }
                 </div>
               </div>
             );

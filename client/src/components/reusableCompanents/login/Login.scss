@@ -18,6 +18,11 @@
     border-radius: 1.5vw;
     padding: 2.5vw 3.5vw;
     box-shadow: 3px 15px 83px -13px rgba(0, 0, 0, 0.38);
+    .register-login {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
     .row {
       padding: 1vw 0;
       width: 25vw;
@@ -43,6 +48,14 @@
         .login-icon {
           margin-left: 0.5vw;
         }
+      }
+      span {
+        font-size: 1.5vw;
+        color: black;
+        text-decoration: underline;
+        transition: all 0.2s ease;
+        font-family: "senBold";
+        cursor: pointer;
       }
     }
   }

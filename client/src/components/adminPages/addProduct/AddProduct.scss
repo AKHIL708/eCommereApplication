@@ -1,0 +1,30 @@
+#add-product {
+  padding: 2vw 1.8vw;
+  header {
+    h1 {
+      font-family: "poppinsMedium";
+      font-size: 3.5vw;
+    }
+  }
+  .inputs-container {
+    .col {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      .row {
+        width: 25vw;
+        margin: 1vw 2.5vw 1vw 0;
+        input {
+          padding: 0.8vw 0.8vw;
+          width: 100%;
+          outline: none;
+          font-size: 1.2vw;
+          border: 1px solid rgb(208, 208, 208);
+        }
+        input:focus {
+          outline: none;
+        }
+      }
+    }
+  }
+}

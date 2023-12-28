@@ -6,6 +6,7 @@ const PrivateRoutes = ({ children, requiredRole }) => {
   const navigate = useNavigate();
 
   const [userDeatils, setUserDetails] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -14,11 +15,17 @@ const PrivateRoutes = ({ children, requiredRole }) => {
         console.log("storedDatil : ", storedUserDetails);
         setUserDetails(storedUserDetails);
       }
-      // setLoading(false);
     };
 
+    setTimeout(() => {
+      setLoading(false);
+    }, 2000);
     fetchData();
   }, []);
+
+  if (loading) {
+    return <h1>Loading ....</h1>;
+  }
 
   // handling user route like if logged in no need to show login page else show login page
   if (userDeatils != null && requiredRole === "user") {
