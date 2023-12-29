@@ -185,7 +185,7 @@ function Dashboard() {
                 })}
               </>
             ) : (
-              <h1>Loading .....</h1>
+              <h1>Loadings .....</h1>
             )}
           </div>
         </section>

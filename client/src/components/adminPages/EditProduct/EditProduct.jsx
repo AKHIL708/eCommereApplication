@@ -1,8 +1,41 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import Stack from "@mui/material/Stack";
+import Snackbar from "@mui/material/Snackbar";
+import MuiAlert from "@mui/material/Alert";
 import "./EditProduct.scss";
-import { useParams } from "react-router-dom";
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
 
 function EditProduct() {
+  const [state, setState] = useState({
+    open: false,
+    message: "hello",
+    severity: "success",
+    vertical: "top",
+    horizontal: "right",
+  });
+  const { vertical, horizontal, open, message, severity } = state;
+
+  const handleNotificationBar = ({ open, message, severity }) => {
+    // console.log(message, open, severity);
+    setState({
+      ...state,
+      open,
+      message,
+      severity,
+    });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
+  // above handliing the snack bar
+
+  const navigate = useNavigate();
   const { productId } = useParams();
   const [file, setFile] = useState(null);
   const [productDetails, setProductDetails] = useState({
@@ -37,6 +70,73 @@ function EditProduct() {
     if (selectedFile) {
       setFile(selectedFile);
       setFileName(selectedFile.name);
+    }
+  };
+  const EditProduct = async () => {
+    let url = `${
+      import.meta.env.VITE_REACT_APP_BASE_API_URL_DEV
+    }/products/update`;
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/json");
+
+    var raw = JSON.stringify({
+      id: productId,
+      data: [
+        {
+          column: "pName",
+          value: pName,
+        },
+        {
+          column: "category",
+          value: category,
+        },
+        {
+          column: "Availability",
+          value: Availability,
+        },
+        {
+          column: "originalPrice",
+          value: originalPrice,
+        },
+        {
+          column: "discountPrice",
+          value: discountPrice,
+        },
+        {
+          column: "description",
+          value: description,
+        },
+        {
+          column: "isBestDeal",
+          value: isBestDeal,
+        },
+      ],
+    });
+
+    var requestOptions = {
+      method: "POST",
+      headers: myHeaders,
+      body: raw,
+      redirect: "follow",
+    };
+
+    const response = await fetch(url, requestOptions);
+    if (!response.ok) {
+      const error = await response.text();
+      console.log(error);
+      return;
+    }
+
+    const data = await response.json();
+    if (data.message == "success") {
+      handleNotificationBar({
+        open: true,
+        severity: "success",
+        message: "Updated Successfully",
+      });
+      setTimeout(() => {
+        navigate("/admin/dashboard");
+      }, 2000);
     }
   };
 
@@ -75,6 +175,7 @@ function EditProduct() {
       <section id="edit-product">
         <header>
           <h1>Edit Product </h1>
+          <p>* Edit Images function need to be add</p>
         </header>
 
         <div className="inputs-container">
@@ -191,11 +292,31 @@ function EditProduct() {
               />
             </div>
             <div className="row">
-              <button>Edit Product</button>
+              <button onClick={() => EditProduct()}>Edit Product</button>
             </div>
           </div>
         </div>
       </section>
+      <Stack spacing={2} sx={{ width: "100%" }}>
+        <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical, horizontal }}
+          key={vertical + horizontal}
+        >
+          <Alert
+            onClose={handleClose}
+            severity={severity}
+            sx={{ width: "100%" }}
+          >
+            <p style={{ fontFamily: "senRegular", fontSize: "1.2vw" }}>
+              {" "}
+              {message}
+            </p>
+          </Alert>
+        </Snackbar>
+      </Stack>
     </>
   );
 }

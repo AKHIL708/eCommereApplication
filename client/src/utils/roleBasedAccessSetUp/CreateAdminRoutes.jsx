@@ -1,3 +1,4 @@
+import AllCustomerOrders from "../../components/adminPages/AllCustomerOrder/AllCustomerOrders.jsx";
 import Dashboard from "../../components/adminPages/Dashboard/Dashboard.jsx";
 import EditProduct from "../../components/adminPages/EditProduct/EditProduct.jsx";
 import AddProduct from "../../components/adminPages/addProduct/AddProduct.jsx";
@@ -23,6 +24,11 @@ const adminRoutesList = [
     path: "product/edit/:productId",
     requiredRole: "admin",
     componentRender: <EditProduct />,
+  },
+  {
+    path: "customer/allOrders",
+    requiredRole: "admin",
+    componentRender: <AllCustomerOrders />,
   },
 ];
 

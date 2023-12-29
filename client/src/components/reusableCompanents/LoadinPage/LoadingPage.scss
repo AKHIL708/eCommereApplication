@@ -1,0 +1,15 @@
+#Loading-page {
+  // border: 1px solid black;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 80vh;
+  .progress {
+   
+    color: gray;
+  }
+  h1 {
+    font-size: 3.5vw;
+    font-family: "senBold";
+  }
+}

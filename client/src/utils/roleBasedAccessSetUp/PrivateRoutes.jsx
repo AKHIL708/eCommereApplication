@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Navigate, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
+import LoadinPage from "../../components/reusableCompanents/LoadinPage/LoadinPage";
 
 const PrivateRoutes = ({ children, requiredRole }) => {
   const navigate = useNavigate();
@@ -24,7 +25,11 @@ const PrivateRoutes = ({ children, requiredRole }) => {
   }, []);
 
   if (loading) {
-    return <h1>Loading ....</h1>;
+    return (
+      <>
+        <LoadinPage />{" "}
+      </>
+    );
   }
 
   // handling user route like if logged in no need to show login page else show login page

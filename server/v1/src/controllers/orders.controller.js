@@ -80,16 +80,9 @@ router.post("/addMany", async (req, res) => {
     });
   }
 });
-router.post("/update/:orderId", async (req, res) => {
-  const result = await updateOrder(
-    [
-      {
-        column: "orderStatus",
-        value: "success",
-      },
-    ],
-    req.params.orderId
-  );
+router.post("/update", async (req, res) => {
+  const { data, id } = req.body;
+  const result = await updateOrder(data, id);
   handleErorrAndResponse(result, res);
 });
 

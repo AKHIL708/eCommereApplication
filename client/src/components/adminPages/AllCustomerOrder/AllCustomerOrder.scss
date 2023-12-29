@@ -1,0 +1,151 @@
+#all-customer-orders {
+  // background-color: red;
+  display: flex;
+  flex-direction: column;
+  padding: 2vw;
+  header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    h1 {
+      font-family: "poppinsMedium";
+      font-size: 3.5vw;
+    }
+  }
+  .order-history-card {
+    // border: 1px solid black;
+    border-radius: 0.5vw;
+    padding: 0.5vw;
+    margin: 1.5vw 0;
+    background-color: white;
+    box-shadow: 10px 10px 26px -1px rgba(0, 0, 0, 0.32);
+    transition: all 0.2s ease;
+    .row {
+      // background-color: yellow;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      padding: 0.1vw 0.8vw;
+      h1 {
+        width: 12vw;
+        font-size: 1.5vw;
+      }
+      h2 {
+        width: 2vw;
+      }
+      p {
+        font-family: "poppinsRegular";
+        font-size: 1.5vw;
+      }
+    }
+  }
+  .order-history-card:hover {
+    transform: scale(1.04);
+  }
+  #product-history-cards {
+    display: flex;
+    flex-direction: column;
+    padding: 2vw;
+    .history-card {
+      padding: 1vw;
+      border-radius: 0.5vw;
+      margin: 1.2vw 0;
+      box-shadow: 10px 10px 26px -1px rgba(0, 0, 0, 0.32);
+      background-color: white;
+      display: flex;
+      overflow-y: hidden;
+      align-items: center;
+      .edit-card {
+        // border: 1px solid black;
+        box-shadow: 10px 10px 26px -1px rgba(0, 0, 0, 0.32);
+        border-radius: 50%;
+        padding: 1.2vw;
+        background-color: white;
+        position: absolute;
+        display: flex;
+        cursor: pointer;
+        right: 3.5vw;
+        margin-top: -13.5vw;
+        .edit-icon {
+          font-size: 2vw;
+          color: green;
+        }
+      }
+      .col {
+        background-color: white;
+        border: none;
+        .store-img {
+          // border: 1px solid black;
+          width: 25vw;
+          height: 28vh;
+          background-repeat: no-repeat;
+          background-position: center;
+          background-size: contain;
+          cursor: pointer;
+        }
+        .row {
+          display: flex;
+          align-items: center;
+          padding: 0.2vw 0;
+          h1 {
+            font-size: 1.5vw;
+            width: 10vw;
+          }
+          span {
+            width: 2vw;
+          }
+          p {
+            font-size: 1.5vw;
+            font-family: "poppinsRegular";
+          }
+        }
+      }
+    }
+  }
+}
+.modal {
+  .box {
+    .container {
+      display: flex;
+      flex-direction: column;
+
+      .row {
+        display: flex;
+        align-items: flex-start;
+        justify-content: flex-start;
+        // border: 1px solid black;
+        align-items: center;
+        width: 100%;
+        margin: 0.6vw 0;
+
+        span {
+          font-family: "senBold";
+          font-size: 1.5vw;
+          width: 1.5vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+        h1:nth-child(1) {
+          width: 10vw;
+          //   border: 1px solid black;
+        }
+
+        h1 {
+          font-family: "poppinsMedium";
+          font-size: 1.5vw;
+        }
+      }
+    }
+    .buttons {
+      .disable-btn {
+        opacity: 0.8;
+        color: white;
+        border: 1px solid green;
+        background-color: green;
+        cursor: not-allowed;
+        pointer-events: none;
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import CheckIcon from "@mui/icons-material/Check";
 import successAudio from "../../../assets/soundEffects/success-sound.mp3";
-import "./Loader.scss";
+import "./OrderPlaced.scss";
 import { useNavigate } from "react-router-dom";
 
 function Loader() {

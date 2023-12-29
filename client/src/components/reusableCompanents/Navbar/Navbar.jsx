@@ -186,7 +186,10 @@ function Navbar() {
             </>
           ) : (
             <>
-              <h1 style={{fontFamily:"montseratBold"  , fontSize: "2.5vw"}}> Welcome Admin</h1>
+              <h1 style={{ fontFamily: "montseratBold", fontSize: "2.5vw" }}>
+                {" "}
+                Welcome Admin
+              </h1>
               <div className="row">
                 <button
                   style={{
@@ -208,6 +211,7 @@ function Navbar() {
                     fontFamily: "poppinsBold",
                     fontSize: "1.2vw",
                   }}
+                  onClick={() => navigate("/admin/customer/allOrders")}
                 >
                   Customer Orders
                 </button>

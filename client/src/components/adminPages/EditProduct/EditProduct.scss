@@ -3,10 +3,17 @@
   header {
     display: flex;
     align-items: center;
-    justify-content: space-between;
+    justify-content: flex-start;
     h1 {
       font-family: "poppinsMedium";
       font-size: 3.5vw;
+    }
+    p{
+      font-family: 'poppinsRegular';
+      font-size: 1.2vw;
+      color: red;
+      margin-top: 1.2vw;
+      padding-left: 1vw;
     }
   }
   .inputs-container {

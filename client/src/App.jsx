@@ -19,9 +19,10 @@ import CartItems from "./components/pages/cartItems/CartItems";
 // import CheckOut from "./components/pages/checkOut/CheckOut.jsx";
 import Login from "./components/reusableCompanents/login/Login.jsx";
 import adminRoutesList from "./utils/roleBasedAccessSetUp/CreateAdminRoutes.jsx";
-import Loader from "./components/reusableCompanents/waitingLoader/Loader.jsx";
+import OrderPlaced from "./components/reusableCompanents/OrderPlaced/OderPlaced.jsx";
 import PrivateRoutes from "./utils/roleBasedAccessSetUp/privateRoutes.jsx";
 import AdminLogin from "./components/adminPages/login/AdminLogin.jsx";
+import LoadinPage from "./components/reusableCompanents/LoadinPage/LoadinPage.jsx";
 
 function App() {
   const location = useLocation();
@@ -46,6 +47,7 @@ function App() {
               }
             />
             <Route exact path="/user/account/*" element={<UserAccount />} />
+            <Route exact path="/loading" element={<LoadinPage />} />
             <Route
               exact
               path="/productDetail/:productId"
@@ -58,7 +60,7 @@ function App() {
             />
             <Route exact path="/cart" element={<CartItems />} />
             {/* <Route exact path="/check-out" element={<CheckOut />} /> */}
-            <Route exact path="/order-received" element={<Loader />} />
+            <Route exact path="/order-received" element={<OrderPlaced />} />
 
             {/* admin Login page  */}
             <Route exact path="/admin/login" element={<AdminLogin />} />
