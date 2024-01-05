@@ -58,17 +58,19 @@ function AllCustomerOrders() {
 
   const handleOpenModal = async (pName, data) => {
     setOpenModal(true);
+
     // let url = JSON.parse(data.images);
     let UserName = await fetchUserById(data.userId);
-
+    
     setModalData({
       id: data.id,
       pName,
-      UserName,
+      UserName: UserName.firstName,
       orderStatus: data.orderStatus,
       groupedOrderId: data.groupedOrderId,
+      address: UserName.address,
     });
-    console.log(data, UserName);
+    // console.log(UserName, data);
   };
   const handleCloseModal = () => setOpenModal(false);
 
@@ -189,8 +191,7 @@ function AllCustomerOrders() {
       //   setModalData({
       //     ...modalData,
       //   });
-      let fullName = `${result.firstName} ${result.lastName}`;
-      return fullName;
+      return result;
     }
   };
   const updateOrderProductStatus = async (orderStatus) => {
@@ -424,6 +425,11 @@ function AllCustomerOrders() {
               <h1>User Name</h1>
               <span>:</span>
               <h1>{modalData.UserName}</h1>
+            </div>
+            <div className="row">
+              <h1>Address</h1>
+              <span>:</span>
+              <h1>{modalData.address}</h1>
             </div>
             <div className="row">
               <h1>orderStatus</h1>
